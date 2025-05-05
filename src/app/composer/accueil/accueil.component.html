@@ -1,0 +1,208 @@
+
+
+  <!-- Header -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="/assets/images/logo.jpg" alt="Logo Don de Sang">
+        <h1>Don de Sang</h1>
+      </div>
+      
+      <ul class="nav-links" id="nav-menu">
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#info">Pourquoi Donner</a></li>
+        <li><a href="#process">Comment ça marche</a></li>
+        <li><a href="#temoignages">Témoignages</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <!-- Bloc de connexion/déconnexion -->
+<div class="actions" *ngIf="!isLoggedIn; else deconnexionBlock">
+  <div class="dropdown">
+    <button class="dropbtn">
+      <img src="/assets/images/icon_connexion.png" alt="User Icon" class="user-icon">
+    </button>
+    <div class="dropdown-content">
+      <a (click)="goToRegister()" class="btn blue-btn">Inscription</a>
+      <a (click)="goToLogin()" class="btn orange-btn">Connexion</a>
+    </div>
+  </div>
+</div>
+
+<ng-template #deconnexionBlock>
+  <button class="action-btn" (click)="logout()">Déconnexion</button>
+</ng-template>
+
+      <div class="menu-icon" id="menu-icon">
+        &#9776;
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="accueil">
+    <div class="hero-content">
+      <h2>Chaque Don Compte, Chaque Goutte Sauve</h2>
+      <p>Rejoignez notre communauté de donneurs et contribuez à sauver des vies. Un simple geste peut faire une grande différence.</p>
+      <div class="hero-buttons">
+        <a *ngIf="isDonateur" routerLink="/faire-don" class="btn btn-primary">Faire un Don</a>
+        <a *ngIf="!isDonateur" class="btn btn-primary disabled" style="pointer-events: none; opacity: 0.5;" title="Connectez-vous en tant que donateur pour accéder">Faire un Don</a>
+        
+        <a href="#" class="btn btn-outline">En Savoir Plus</a>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- Info Section -->
+  <section class="info-section" id="info">
+    <div class="section-title">
+      <h2>Pourquoi Donner Son Sang</h2>
+      <p>Le don de sang est un acte généreux qui sauve des vies quotidiennement</p>
+    </div>
+    
+    <div class="stats-container">
+      <div class="stat-box">
+        <div class="stat-number">3</div>
+        <p class="stat-text">Vies sauvées en moyenne par chaque don</p>
+      </div>
+      
+      <div class="stat-box">
+        <div class="stat-number">10K</div>
+        <p class="stat-text">Dons nécessaires chaque jour en France</p>
+      </div>
+      
+      <div class="stat-box">
+        <div class="stat-number">42</div>
+        <p class="stat-text">Jours pour régénérer son sang après un don</p>
+      </div>
+      
+      <div class="stat-box">
+        <div class="stat-number">1h</div>
+        <p class="stat-text">Durée moyenne d'un don du sang complet</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process Section -->
+  <section class="process-section" id="process">
+    <div class="section-title">
+      <h2>Comment ça marche</h2>
+      <p>Le processus de don est simple, rapide et sécurisé</p>
+    </div>
+    
+    <div class="steps-container">
+      <div class="step">
+        <div class="step-icon">📋</div>
+        <h3>Inscription</h3>
+        <p>Créez votre compte et remplissez le questionnaire de santé pour vérifier votre éligibilité.</p>
+      </div>
+      
+      <div class="step">
+        <div class="step-icon">📅</div>
+        <h3>Rendez-vous</h3>
+        <p>Choisissez un centre de don près de chez vous et prenez rendez-vous selon vos disponibilités.</p>
+      </div>
+      
+      <div class="step">
+        <div class="step-icon">💉</div>
+        <h3>Don</h3>
+        <p>Le prélèvement dure environ 10 minutes, suivi d'une collation pour récupérer.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section" id="temoignages">
+    <div class="section-title">
+      <h2>Témoignages</h2>
+      <p>Découvrez les expériences de nos donneurs réguliers</p>
+    </div>
+    
+    <div class="testimonials-container">
+      <div class="testimonial">
+        <p class="testimonial-text">Je donne mon sang tous les 3 mois depuis 5 ans. C'est toujours un moment agréable, l'équipe est professionnelle et bienveillante. Savoir que mon geste aide directement des personnes dans le besoin me remplit de joie.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">
+            <img src="/api/placeholder/50/50" alt="Sophie">
+          </div>
+          <div class="author-info">
+            <h4>Sophie M.</h4>
+            <p>Donneuse régulière depuis 5 ans</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial">
+        <p class="testimonial-text">Après l'accident de mon fils, j'ai réalisé l'importance cruciale des dons de sang. Aujourd'hui, je suis devenu donneur et j'encourage tout mon entourage à faire de même. C'est un petit geste qui peut sauver des vies.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">
+            <img src="/api/placeholder/50/50" alt="Omar">
+          </div>
+          <div class="author-info">
+            <h4>Omar K.</h4>
+            <p>Nouveau donneur depuis 2023</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Prêt à faire la différence ?</h2>
+      <p>Rejoignez notre communauté de donneurs aujourd'hui et contribuez à sauver des vies près de chez vous.</p>
+      <a href="#" class="btn btn-white">S'inscrire Maintenant</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <h3>Don de Sang</h3>
+        <p>Notre mission est de faciliter le don de sang et de sensibiliser le public à son importance vitale pour sauver des vies.</p>
+        <div class="social-icons">
+          <a href="#" class="social-icon">f</a>
+          <a href="#" class="social-icon">t</a>
+          <a href="#" class="social-icon">in</a>
+          <a href="#" class="social-icon">ig</a>
+        </div>
+      </div>
+      
+      <div class="footer-links">
+        <h3>Liens Rapides</h3>
+        <ul>
+          <li><a href="#accueil">Accueil</a></li>
+          <li><a href="#info">Pourquoi Donner</a></li>
+          <li><a href="#process">Comment ça marche</a></li>
+          <li><a href="#temoignages">Témoignages</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-links">
+        <h3>Informations</h3>
+        <ul>
+          <li><a href="#">À propos de nous</a></li>
+          <li><a href="#">Centres de don</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Politique de confidentialité</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-links">
+        <h3>Contact</h3>
+        <ul>
+          <li>Email: contact &#64;dondesang.fr</li>
+          <li>Téléphone: 01 23 45 67 89</li>
+          <li>Adresse: 123 Rue du Don, Paris</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="copyright">
+      <p>&copy; 2025 Don de Sang. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+ 

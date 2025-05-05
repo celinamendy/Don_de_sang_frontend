@@ -1,0 +1,65 @@
+<!-- Ajout des polices et des icônes -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>listes des Campagnes</h2>
+    <!-- <button class="btn btn-primary">
+      <i class="fas fa-plus me-2"></i> Nouvelle Campagne
+    </button> -->
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-4" *ngFor="let campagne of campagnes">
+      <div class="card shadow">
+        <div class="card-header bg-white border-0 pt-3 pb-0">
+          <h5 class="card-title">{{ campagne.theme }}</h5>
+          <h6 class="card-subtitle mb-2">
+            <i class="fas fa-map-marker-alt me-2"></i>
+            {{ campagne.lieu }}
+          </h6>
+        </div>
+        <div class="card-body">
+          <div class="info-items">
+            <div class="info-item">
+              <i class="far fa-calendar-alt"></i>
+              <span>{{ campagne.date_debut | date:'dd/MM/yyyy' }}</span>
+            </div>
+            <div class="info-item">
+              <i class="far fa-clock"></i>
+              <span>{{ campagne.Heure_debut }} - {{ campagne.Heure_fin }}</span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-users"></i>
+              <span>{{ campagne.participant }} participants</span>
+            </div>
+          </div>
+          
+          <div class="info-status">
+            <span [ngClass]="{
+              'status-badge': true,
+              'status-planifiee': campagne.statut === 'planifiée',
+              'status-en-cours': campagne.statut === 'en_cours',
+              'status-terminee': campagne.statut === 'terminée',
+              'status-annulee': campagne.statut === 'annulée'
+            }">
+              <i class="fa-solid fa-circle-info me-1"></i>
+              {{ campagne.statut }}
+            </span>
+          </div>
+          
+          <div class="mt-3 d-flex justify-content-between">
+           <button  class="btn btn-outline-info"(click)="getCampagneDetail(campagne.id)">
+              <i class="fas fa-eye me-1"></i> Voir
+            </button>
+            <button class="btn btn-outline-secondary">
+              <i class="fas fa-pen me-1"></i> S'inscrire
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

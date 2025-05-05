@@ -1,0 +1,127 @@
+ <!-- Formulaire d'ajout/modification -->
+
+  <div class="form-container" *ngIf="true">
+    <div class="card">
+      <div class="card-header">
+        <h3>{{ isEditing ? 'Modifier la campagne' : 'Ajouter une nouvelle campagne' }}</h3>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="campagneForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="theme">Thème *</label>
+                <input type="text" id="theme" formControlName="theme" class="form-control" placeholder="Thème de la campagne" required>
+                <div *ngIf="campagneForm.get('theme')?.invalid && campagneForm.get('theme')?.touched" class="text-danger">
+                  Thème obligatoire
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="lieu">Lieu *</label>
+                <input type="text" id="lieu" formControlName="lieu" class="form-control" placeholder="Lieu de la campagne" required>
+                <div *ngIf="campagneForm.get('lieu')?.invalid && campagneForm.get('lieu')?.touched" class="text-danger">
+                  Lieu obligatoire
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="date_debut">Date de début *</label>
+                <input type="date" id="date_debut" formControlName="date_debut" class="form-control" required>
+                <div *ngIf="campagneForm.get('date_debut')?.invalid && campagneForm.get('date_debut')?.touched" class="text-danger">
+                  Date de début obligatoire
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="date_fin">Date de fin *</label>
+                <input type="date" id="date_fin" formControlName="date_fin" class="form-control" required>
+                <div *ngIf="campagneForm.get('date_fin')?.invalid && campagneForm.get('date_fin')?.touched" class="text-danger">
+                  Date de fin obligatoire
+                </div>
+              </div>
+            </div>
+          </div> 
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="Heure_debut">Heure de début *</label>
+                <input type="time" id="Heure_debut" formControlName="Heure_debut" class="form-control" required>
+                <div *ngIf="campagneForm.get('Heure_debut')?.invalid && campagneForm.get('Heure_debut')?.touched" class="text-danger">
+                  Heure de début obligatoire
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="Heure_fin">Heure de fin *</label>
+                <input type="time" id="Heure_fin" formControlName="Heure_fin" class="form-control" required>
+                <div *ngIf="campagneForm.get('Heure_fin')?.invalid && campagneForm.get('Heure_fin')?.touched" class="text-danger">
+                  Heure de fin obligatoire
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="participant">Nombre de participants *</label>
+                <input type="number" id="participant" formControlName="participant" class="form-control" min="1" required>
+                <div *ngIf="campagneForm.get('participant')?.invalid && campagneForm.get('participant')?.touched" class="text-danger">
+                  Nombre de participants obligatoire (minimum 1)
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="statut">Statut *</label>
+                <select id="statut" formControlName="statut" class="form-control" required>
+                  <option value="">-- Sélectionner --</option>
+                  <option value="planifiée">Planifiée</option>
+                  <option value="en_cours">En cours</option>
+                  <option value="terminée">Terminée</option>
+                  <option value="annulée">Annulée</option>
+                </select>
+                <div *ngIf="campagneForm.get('statut')?.invalid && campagneForm.get('statut')?.touched" class="text-danger">
+                  Statut obligatoire
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="structure_transfusion_sanguin_id">Structure de transfusion *</label>
+            <select id="structure_transfusion_sanguin_id" formControlName="structure_transfusion_sanguin_id" class="form-control" required>
+              <option value="">-- Sélectionner --</option>
+              <!-- Vous devrez charger cette liste depuis votre API -->
+              <option value="1">Centre National de Transfusion Sanguine</option>
+              <option value="2">Hôpital Régional</option>
+            </select>
+            <div *ngIf="campagneForm.get('structure_transfusion_sanguin_id')?.invalid && campagneForm.get('structure_transfusion_sanguin_id')?.touched" class="text-danger">
+              Structure obligatoire
+            </div>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description" class="form-control" rows="3" placeholder="Description de la campagne"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-success" [disabled]="campagneForm.invalid">
+              {{ isEditing ? 'Mettre à jour' : 'Enregistrer' }}
+            </button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="cancelForm()">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

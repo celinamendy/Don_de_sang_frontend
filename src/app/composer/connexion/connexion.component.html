@@ -1,0 +1,71 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <img src="assets/images/image-sang2.png" class="blood-decoration" alt="Tache de sang" />
+  <img src="assets/images/image_griffe-red.png" class="scratches-decoration" alt="Égratignures rouges" />
+  <img src="assets/images/griffe_de_lion.png" class="flag-colors-decoration" alt="Couleurs du drapeau" />
+  <div class="circle-blue"></div>
+  <div class="circle-red"></div>
+  
+  <div class="card p-4 shadow-lg border-0 custom-card">
+    <div class="row align-items-center">
+      <div class="col-md-6 text-center mb-4 mb-md-0">
+        <img src="assets/images/image connexion.png" class="img-fluid" alt="Don de sang" />
+      </div>
+      <div class="col-md-6">
+        <h2 class="text-center mb-4 text-danger fw-bold">Connexion</h2>
+
+        <!-- Message d'erreur global -->
+        <div *ngIf="errorMessage" class="alert alert-danger mb-3">
+          {{ errorMessage }}
+        </div>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="loginForm" autocomplete="on">
+          <div class="form-group mb-3">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              formControlName="email" 
+              placeholder="Chérif@gmail.com"
+              class="form-control border-danger"
+              autocomplete="username"
+              (input)="loginForm.controls['email'].markAsTouched()" 
+            />
+            <div class="text-danger small mt-1" *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched">
+              <div *ngIf="loginForm.controls['email'].errors?.['required']">L'email est requis.</div>
+              <div *ngIf="loginForm.controls['email'].errors?.['email']">Veuillez entrer une adresse email valide.</div>
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label for="password">Mot de passe</label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password"
+              formControlName="password" 
+              placeholder="*************"
+              class="form-control border-danger"
+              autocomplete="current-password"
+              (input)="loginForm.controls['password'].markAsTouched()" 
+            />
+            <div class="text-danger small mt-1" *ngIf="loginForm.controls['password'].invalid && loginForm.controls['password'].touched">
+              <div *ngIf="loginForm.controls['password'].errors?.['required']">Le mot de passe est requis.</div>
+              <div *ngIf="loginForm.controls['password'].errors?.['minlength']">Le mot de passe doit contenir au moins 8 caractères.</div>
+            </div>
+          </div>
+
+          <div class="d-grid">
+            <button 
+              type="submit" 
+              class="btn btn-danger" 
+              [disabled]="loginForm.invalid || loading">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Se connecter
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

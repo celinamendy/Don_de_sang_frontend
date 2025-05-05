@@ -1,0 +1,131 @@
+/* styles.scss */
+
+
+/* Custom styles */
+.bg-opacity-10 {
+  --bs-bg-opacity: 0.1;
+}
+
+.min-vh-100 {
+  min-height: 100vh;
+}
+
+.nav-tabs .nav-link {
+  border: none;
+  color: #6c757d;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  border-bottom: 2px solid #dee2e6;
+  color: #495057;
+}
+
+.nav-tabs .nav-link.active {
+  color: #b71c1c;
+  border-bottom: 2px solid #b71c1c;
+  background-color: transparent;
+}
+
+.table th {
+  font-weight: 500;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #6c757d;
+}
+
+.card {
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+/* Additional Styling for Dashboard Elements */
+.card-title {
+  color: #495057;
+  font-weight: 600;
+}
+
+.badge.rounded-pill {
+  padding: 0.35em 0.65em;
+  font-weight: 500;
+}
+
+button.btn-outline-primary {
+  color: #0d6efd;
+  border-color: #0d6efd;
+  transition: all 0.2s ease;
+}
+
+button.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Header specific styles */
+header.bg-danger {
+  background-color: #b71c1c !important;
+}
+
+/* Chart containers */
+canvas {
+  max-width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .card-body {
+    padding: 1rem;
+  }
+  
+  h5.card-title {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+  }
+  
+  .table th, 
+  .table td {
+    padding: 0.5rem;
+  }
+}
+
+/* Custom scrollbar for tables */
+.table-responsive::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}

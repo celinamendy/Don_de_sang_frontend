@@ -1,0 +1,173 @@
+/* General Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+}
+
+.container {
+
+  position: relative;
+  overflow: hidden;
+}
+/* Style pour l'image de tache de sang */
+.blood-decoration {
+  position: absolute;
+  top: 80px;
+  right: 100px;
+  width: 150px;
+  height: auto;
+  z-index: 1;
+}
+
+/* Style pour les égratignures rouges en bas à gauche */
+.scratches-decoration {
+  position: absolute;
+  bottom: 80px;
+  left: 120px;
+  width: 120px;
+  height: auto;
+  z-index: 1;
+}
+/* Style pour les couleurs du drapeau en bas à droite */
+.flag-colors-decoration {
+  position: absolute;
+  bottom: 85px;
+  right: 120px;
+  width: 120px;
+  height: auto;
+  z-index: 1;
+}
+/* Card Styling */
+.custom-card {
+  max-width: 900px;
+  width: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  background-color: white;
+}
+
+/* Red Circle Decoration */
+.custom-card::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 250px;
+  height: 250px;
+  background-color: rgba(239, 107, 120, 0.3);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* Light Blue Circle Decoration */
+.custom-card::after {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: -50px;
+  width: 150px;
+  height: 150px;
+  background-color: rgba(126, 234, 251, 0.2);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+/* Blood Splatter */
+.blood-splatter {
+  position: absolute;
+  top: 80px;
+  right: 20px;
+  width: 100px;
+  height: auto;
+  z-index: 1;
+}
+
+/* Blood Scratch Marks */
+.blood-scratch {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  width: 100px;
+  height: auto;
+  z-index: 1;
+}
+
+/* Flag Colors (for the bottom right corner) */
+.flag-colors {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 50px;
+  height: 30px;
+  background: linear-gradient(135deg, #009639 33%, #ffce00 33%, #ffce00 66%, #dc143c 66%);
+  border-radius: 5px;
+  z-index: 1;
+}
+
+/* Form Styling */
+h2 {
+  color: #dc3545;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+label {
+  color: #212529;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+/* input {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+  border-radius: 5px;}, */
+
+.form-control {
+  border: 1px solid #dc3545;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+  border-color: #dc3545;
+}
+
+/* Button Styling */
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+  padding: 12px;
+  font-weight: 600;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #e74c3c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-danger:disabled {
+  background-color: #e74c3c;
+  cursor: not-allowed;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .custom-card {
+    max-width: 95%;
+  }
+}
+
+/* Animation for the heart image */
+@keyframes heartbeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.img-fluid {
+  animation: heartbeat 2s infinite ease-in-out;
+}

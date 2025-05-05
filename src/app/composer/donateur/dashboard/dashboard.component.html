@@ -1,0 +1,203 @@
+<body>
+  <div class="container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <div class="logo-icon"><i class="fas fa-tint"></i></div>
+          <span>Don de Sang</span>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li class="active">
+          <a href="#"><i class="fas fa-home"></i><span>Tableau de bord</span></a>
+        </li>
+        <li><a href="#"><i class="fas fa-calendar-alt"></i><span>Campagnes</span></a></li>
+        <li><a href="#"><i class="fas fa-history"></i><span>Historique</span></a></li>
+        <li><a href="#"><i class="fas fa-heart"></i><span>Éligibilité</span></a></li>
+        <li><a href="#"><i class="fas fa-medal"></i><span>Badges</span></a></li>
+        <li><a href="#"><i class="fas fa-map-marker-alt"></i><span>Points de collecte</span></a></li>
+        <li><a href="#"><i class="fas fa-cog"></i><span>Paramètres</span></a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- Header -->
+      <div class="header">
+        <div class="header-title">
+          <h1>Bienvenue, {{ donateur.nom }} {{ donateur.prenom }} sur votre espace donateur !</h1>
+        </div>
+        <div class="user-info">
+          <div class="notification">
+            <i class="fas fa-bell"></i>
+            <span class="notification-count">3</span>
+          </div>
+          <div class="user-profile">
+            <div class="avatar">A</div>
+            <span>Amadou D.</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stats-cards">
+        <div class="card stat-card">
+          <div class="stat-icon donations"><i class="fas fa-tint"></i></div>
+          <div class="stat-info">
+            <h3>{{ historiqueDons.length }}</h3>
+            <p>Dons effectués</p>
+          </div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon countdown"><i class="fas fa-calendar-day"></i></div>
+          <div class="stat-info">
+            <h3>8 jours</h3>
+            <p>Avant prochain don possible</p>
+          </div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon eligibility"><i class="fas fa-check-circle"></i></div>
+          <div class="stat-info">
+            <!-- <h3>{{ criteresEligibilite[0]?.delaiAvantProchainDon || 'N/A' }}</h3> -->
+            <p>Statut actuel</p>
+          </div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon badges"><i class="fas fa-medal"></i></div>
+          <div class="stat-info">
+            <h3>3</h3>
+            <p>Badges obtenus</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Campagnes -->
+      <section class="campaigns-section">
+        <div class="section-header">
+          <h2>Campagnes à venir</h2>
+          <a href="#" class="view-all">Voir tout</a>
+        </div>
+        <div class="campaigns-grid">
+          <!-- Card 1 -->
+          <div class="card campaign-card">
+            <div class="campaign-img">
+              <div class="campaign-status upcoming">À venir</div>
+            </div>
+            <div class="campaign-info">
+              <h3>Journée Nationale du Don de Sang</h3>
+              <div class="campaign-details">
+                <div class="campaign-detail"><i class="fas fa-calendar"></i><span>12 mai 2025</span></div>
+                <div class="campaign-detail"><i class="fas fa-map-marker-alt"></i><span>Hôpital Principal de Dakar</span></div>
+                <div class="campaign-detail"><i class="fas fa-clock"></i><span>09:00 - 17:00</span></div>
+              </div>
+              <div class="campaign-actions">
+                <button class="btn btn-primary">S'inscrire</button>
+                <button class="btn btn-outline">En savoir plus</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="card campaign-card">
+            <div class="campaign-img">
+              <div class="campaign-status active">En cours</div>
+            </div>
+            <div class="campaign-info">
+              <h3>Don de Sang Université Cheikh Anta Diop</h3>
+              <div class="campaign-details">
+                <div class="campaign-detail"><i class="fas fa-calendar"></i><span>Aujourd'hui - 30 avril 2025</span></div>
+                <div class="campaign-detail"><i class="fas fa-map-marker-alt"></i><span>Campus UCAD, Dakar</span></div>
+                <div class="campaign-detail"><i class="fas fa-clock"></i><span>10:00 - 16:00</span></div>
+              </div>
+              <div class="campaign-actions">
+                <button class="btn btn-primary">S'inscrire</button>
+                <button class="btn btn-outline">En savoir plus</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="card campaign-card">
+            <div class="campaign-img">
+              <div class="campaign-status upcoming">À venir</div>
+            </div>
+            <div class="campaign-info">
+              <h3>Collecte de sang - Centre National</h3>
+              <div class="campaign-details">
+                <div class="campaign-detail"><i class="fas fa-calendar"></i><span>15 mai 2025</span></div>
+                <div class="campaign-detail"><i class="fas fa-map-marker-alt"></i><span>Centre National de Transfusion Sanguine, Dakar</span></div>
+                <div class="campaign-detail"><i class="fas fa-clock"></i><span>08:00 - 18:00</span></div>
+              </div>
+              <div class="campaign-actions">
+                <button class="btn btn-primary">S'inscrire</button>
+                <button class="btn btn-outline">En savoir plus</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Santé & Historique -->
+      <section class="health-section">
+        <div class="section-header">
+          <h2>Santé & Historique</h2>
+        </div>
+        <div class="health-grid">
+          
+          <!-- Éligibilité -->
+          <div class="card eligibility-card">
+            <div class="eligibility-header">
+              <h3>Critères d'éligibilité</h3>
+              <p>Vérifiez votre éligibilité au don de sang</p>
+            </div>
+            <div class="eligibility-body">
+              <ul class="eligibility-checklist">
+                <li><i class="fas fa-check-circle check-icon"></i><span>Âge entre 18 et 65 ans</span></li>
+                <li><i class="fas fa-check-circle check-icon"></i><span>Poids minimum de 50kg</span></li>
+                <li><i class="fas fa-check-circle check-icon"></i><span>En bonne santé générale</span></li>
+                <li><i class="fas fa-check-circle check-icon"></i><span>Délai minimum respecté depuis dernier don</span></li>
+                <li><i class="fas fa-check-circle check-icon"></i><span>Hémoglobine dans les normes</span></li>
+              </ul>
+              <div style="margin-top: 15px;">
+                <a href="#" class="view-all">Test d'éligibilité complet</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Historique -->
+          <div class="card history-card">
+            <h3 style="margin-bottom: 15px;">Historique de dons</h3>
+            <ul class="history-list">
+              <li class="history-item">
+                <div class="history-date"><span class="day">10</span><span class="month">Jan</span></div>
+                <div class="history-info"><h4>Hôpital Principal de Dakar</h4><p>Don réussi <span class="badge-success">450ml</span></p></div>
+              </li>
+              <li class="history-item">
+                <div class="history-date"><span class="day">22</span><span class="month">Oct</span></div>
+                <div class="history-info"><h4>Centre National de Transfusion</h4><p>Don réussi <span class="badge-success">450ml</span></p></div>
+              </li>
+              <li class="history-item">
+                <div class="history-date"><span class="day">15</span><span class="month">Juil</span></div>
+                <div class="history-info"><h4>Campagne UCAD</h4><p>Don réussi <span class="badge-success">450ml</span></p></div>
+              </li>
+              <li class="history-item">
+                <div class="history-date"><span class="day">03</span><span class="month">Mai</span></div>
+                <div class="history-info"><h4>Hôpital Fann</h4><p>Don réussi <span class="badge-success">450ml</span></p></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>© 2025 Plateforme Nationale de Don de Sang - Tous droits réservés</p>
+      </footer>
+      
+    </main>
+  </div>
+</body>
