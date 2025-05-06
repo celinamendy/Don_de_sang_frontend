@@ -10,7 +10,9 @@ import { apiUrl } from './apiUrl'; // Assurez-vous que apiUrl contient l'URL de 
 export class OrganisateurService {
 
 
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl = 'http://127.0.0.1:8000/api/organisateur'; // Remplacez par l'URL de votre API
+  authService: any;
+
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders() {
@@ -22,6 +24,22 @@ export class OrganisateurService {
       })
     };
   }
+  
+  // Récupérer l'organisateur connecté
+getOrganisateurConnecte(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/organisateur`, this.getAuthHeaders()).pipe(
+    catchError(this.handleError)
+  );
+}
+fetchOrganisateur(): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/me`);
+}
+
+getCurrentOrganisateur(): Observable<any> {
+  const userId = this.authService.getUserId();
+  return this.http.get(`${this.apiUrl}/organisateurs/user/${userId}`);
+}
+
   // Récupérer une organisateur par son ID
   getById(id: number): Observable<any> {
     return this.http.get(`${apiUrl}/organisateurs/${id}`, this.getAuthHeaders());

@@ -1,195 +1,258 @@
-<div class="container">
-  <h2>Mes campagnes</h2>
+<body>
 
-  <!-- Recherche et tri -->
-  <div class="actions">
-    <input type="text" placeholder="Rechercher par thème, lieu ou participants..." [(ngModel)]="searchTerm" (input)="applyFilter()">
-    <button (click)="resetFilters()">Réinitialiser</button>
-  </div>
-
-  <!-- Filtres de section -->
-  <div class="section-filters">
-    <button [class.active]="activeSection === 'all'" (click)="activeSection = 'all'">Toutes</button>
-    <button [class.active]="activeSection === 'today'" (click)="activeSection = 'today'">Aujourd'hui</button>
-    <button [class.active]="activeSection === 'upcoming'" (click)="activeSection = 'upcoming'">À venir</button>
-    <button [class.active]="activeSection === 'past'" (click)="activeSection = 'past'">Passées</button>
-  </div>
-
-  <!-- Campagnes d'aujourd'hui -->
-  <div class="campagnes-section" *ngIf="activeSection === 'all' || activeSection === 'today'">
-    <h3 *ngIf="todayCampagnes.length > 0">Campagnes d'aujourd'hui</h3>
-    <div class="cards-container">
-      <div class="card" *ngFor="let campagne of todayCampagnes">
-        <div class="card-status" [ngClass]="{
-          'status-pending': campagne.statut === 'en_attente',
-          'status-approved': campagne.statut === 'validee',
-          'status-cancelled': campagne.statut === 'annulee'
-        }">
-          {{ campagne.statut === 'en_attente' ? 'En attente' : 
-             campagne.statut === 'validee' ? 'Validée' : 'Annulée' }}
-        </div>
-        <div class="card-header">
-          <div class="card-title">{{ campagne.theme }}</div>
-          <div class="card-subtitle">{{ campagne.lieu }}</div>
-        </div>
-        <div class="card-content">
-          <div class="card-info">
-            <i class="fas fa-calendar"></i>
-            <span>Date:</span> {{ campagne.date_debut | date: 'dd/MM/yyyy' }} - {{ campagne.date_fin | date: 'dd/MM/yyyy' }}
+  <div class="container">
+    <h2 class="display-5">Mes campagnes</h2>
+  
+    <!-- Recherche et tri -->
+    <div class="actions">
+      <input type="text" class="form-control" placeholder="Rechercher par thème, lieu ou participants..." [(ngModel)]="searchTerm" (input)="applyFilter()">
+      <button class="btn btn-outline-secondary" (click)="resetFilters()">Réinitialiser</button>
+    </div>
+  
+    <!-- Filtres de section -->
+    <div class="section-filters">
+      <button [class.active]="activeSection === 'all'" (click)="activeSection = 'all'" class="btn">Toutes</button>
+      <button [class.active]="activeSection === 'today'" (click)="activeSection = 'today'" class="btn">Aujourd'hui</button>
+      <button [class.active]="activeSection === 'upcoming'" (click)="activeSection = 'upcoming'" class="btn">À venir</button>
+      <button [class.active]="activeSection === 'past'" (click)="activeSection = 'past'" class="btn">Passées</button>
+    </div>
+  
+    <!-- Campagnes d'aujourd'hui -->
+    <div class="campagnes-section" *ngIf="activeSection === 'all' || activeSection === 'today'">
+      <h3 *ngIf="todayCampagnes.length > 0">Campagnes d'aujourd'hui</h3>
+      <div class="cards-container">
+        <div class="card" *ngFor="let campagne of todayCampagnes">
+          <div class="card-status" [ngClass]="{
+            'status-pending': campagne.statut === 'en_attente',
+            'status-approved': campagne.statut === 'validee',
+            'status-cancelled': campagne.statut === 'annulee'
+          }">
+            {{ campagne.statut === 'en_attente' ? 'En attente' : 
+               campagne.statut === 'validee' ? 'Validée' : 'Annulée' }}
           </div>
-          <div class="card-info">
-            <i class="fas fa-clock"></i>
-            <span>Heure:</span> {{ campagne.Heure_debut }} - {{ campagne.Heure_fin }}
+          <div class="card-header">
+            <div class="card-title">{{ campagne.theme }}</div>
+            <div class="card-subtitle">{{ campagne.lieu }}</div>
           </div>
-          <div class="card-info">
-            <i class="fas fa-users"></i>
-            <span>Participants:</span> 
-            <div class="participants-badge">{{ campagne.participant }}</div>
-          </div>
-          <div class="card-actions">
-            <button class="btn btn-secondary" (click)="editCampagne(campagne)">
-              <i class="fas fa-edit"></i> Modifier
-            </button>
-            <button class="btn btn-success" (click)="validerCampagne(campagne.id)">
-              <i class="fas fa-check"></i> Valider
-            </button>
-            <button class="btn btn-outline" (click)="viewParticipants(campagne.id)">
-              <i class="fas fa-users"></i> Participants
-            </button>
+          <div class="card-content">
+            <div class="card-info">
+              <i class="fas fa-calendar"></i>
+              <span>Date:</span> {{ campagne.date_debut | date: 'dd/MM/yyyy' }} - {{ campagne.date_fin | date: 'dd/MM/yyyy' }}
+            </div>
+            <div class="card-info">
+              <i class="fas fa-clock"></i>
+              <span>Heure:</span> {{ campagne.Heure_debut }} - {{ campagne.Heure_fin }}
+            </div>
+            <div class="card-info">
+              <i class="fas fa-users"></i>
+              <span>Participants:</span> 
+              <div class="participants-badge">{{ campagne.participant }}</div>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-outline-primary btn-icon" (click)="editCampagne(campagne)" data-bs-toggle="modal" data-bs-target="#campagneModal">
+                <i class="fas fa-edit"></i> Modifier
+              </button>
+              <button class="btn btn-success btn-icon" (click)="validerCampagne(campagne.id)">
+                <i class="fas fa-check"></i> Valider
+              </button>
+              <button class="btn btn-outline-info btn-icon" (click)="viewParticipants(campagne.id)">
+                <i class="fas fa-users"></i> Participants
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Campagnes à venir -->
-  <div class="campagnes-section" *ngIf="activeSection === 'all' || activeSection === 'upcoming'">
-    <h3 *ngIf="upcomingCampagnes.length > 0">Campagnes à venir</h3>
-    <div class="cards-container">
-      <div class="card" *ngFor="let campagne of upcomingCampagnes">
-        <div class="card-status" [ngClass]="{
-          'status-pending': campagne.statut === 'en_attente',
-          'status-approved': campagne.statut === 'validee',
-          'status-cancelled': campagne.statut === 'annulee'
-        }">
-          {{ campagne.statut === 'en_attente' ? 'En attente' : 
-             campagne.statut === 'validee' ? 'Validée' : 'Annulée' }}
-        </div>
-        <div class="card-header">
-          <div class="card-title">{{ campagne.theme }}</div>
-          <div class="card-subtitle">{{ campagne.lieu }}</div>
-        </div>
-        <div class="card-content">
-          <div class="card-info">
-            <i class="fas fa-calendar"></i>
-            <span>Date:</span> {{ campagne.date_debut | date: 'dd/MM/yyyy' }} - {{ campagne.date_fin | date: 'dd/MM/yyyy' }}
+  
+    <!-- Campagnes à venir -->
+    <div class="campagnes-section" *ngIf="activeSection === 'all' || activeSection === 'upcoming'">
+      <h3 *ngIf="upcomingCampagnes.length > 0">Campagnes à venir</h3>
+      <div class="cards-container">
+        <div class="card" *ngFor="let campagne of upcomingCampagnes">
+          <div class="card-status" [ngClass]="{
+            'status-pending': campagne.statut === 'en_attente',
+            'status-approved': campagne.statut === 'validee',
+            'status-cancelled': campagne.statut === 'annulee'
+          }">
+            {{ campagne.statut === 'en_attente' ? 'En attente' : 
+               campagne.statut === 'validee' ? 'Validée' : 'Annulée' }}
           </div>
-          <div class="card-info">
-            <i class="fas fa-clock"></i>
-            <span>Heure:</span> {{ campagne.Heure_debut }} - {{ campagne.Heure_fin }}
+          <div class="card-header">
+            <div class="card-title">{{ campagne.theme }}</div>
+            <div class="card-subtitle">{{ campagne.lieu }}</div>
           </div>
-          <div class="card-info">
-            <i class="fas fa-users"></i>
-            <span>Participants:</span> 
-            <div class="participants-badge">{{ campagne.participant }}</div>
-          </div>
-          <div class="card-actions">
-            <button class="btn btn-secondary" (click)="editCampagne(campagne)">
-              <i class="fas fa-edit"></i> Modifier
-            </button>
-            <button class="btn btn-success" (click)="validerCampagne(campagne.id)">
-              <i class="fas fa-check"></i> Valider
-            </button>
-            <button class="btn btn-outline" (click)="viewParticipants(campagne.id)">
-              <i class="fas fa-users"></i> Participants
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Campagnes passées -->
-  <div class="campagnes-section" *ngIf="activeSection === 'all' || activeSection === 'past'">
-    <h3 *ngIf="pastCampagnes.length > 0">Campagnes passées</h3>
-    <div class="cards-container">
-      <div class="card" *ngFor="let campagne of pastCampagnes">
-        <div class="card-status" [ngClass]="{
-          'status-pending': campagne.statut === 'en_attente',
-          'status-approved': campagne.statut === 'validee',
-          'status-cancelled': campagne.statut === 'annulee'
-        }">
-          {{ campagne.statut === 'en_attente' ? 'En attente' : 
-             campagne.statut === 'validee' ? 'Validée' : 'Annulée' }}
-        </div>
-        <div class="card-header">
-          <div class="card-title">{{ campagne.theme }}</div>
-          <div class="card-subtitle">{{ campagne.lieu }}</div>
-        </div>
-        <div class="card-content">
-          <div class="card-info">
-            <i class="fas fa-calendar"></i>
-            <span>Date:</span> {{ campagne.date_debut | date: 'dd/MM/yyyy' }} - {{ campagne.date_fin | date: 'dd/MM/yyyy' }}
-          </div>
-          <div class="card-info">
-            <i class="fas fa-clock"></i>
-            <span>Heure:</span> {{ campagne.Heure_debut }} - {{ campagne.Heure_fin }}
-          </div>
-          <div class="card-info">
-            <i class="fas fa-users"></i>
-            <span>Participants:</span> 
-            <div class="participants-badge">{{ campagne.participant }}</div>
-          </div>
-          <div class="card-actions">
-            <button class="btn btn-secondary" (click)="editCampagne(campagne)">
-              <i class="fas fa-edit"></i> Modifier
-            </button>
-            <button class="btn btn-success" (click)="validerCampagne(campagne.id)">
-              <i class="fas fa-check"></i> Valider
-            </button>
-            <button class="btn btn-outline" (click)="viewParticipants(campagne.id)">
-              <i class="fas fa-users"></i> Participants
-            </button>
+          <div class="card-content">
+            <div class="card-info">
+              <i class="fas fa-calendar"></i>
+              <span>Date:</span> {{ campagne.date_debut | date: 'dd/MM/yyyy' }} - {{ campagne.date_fin | date: 'dd/MM/yyyy' }}
+            </div>
+            <div class="card-info">
+              <i class="fas fa-clock"></i>
+              <span>Heure:</span> {{ campagne.Heure_debut }} - {{ campagne.Heure_fin }}
+            </div>
+            <div class="card-info">
+              <i class="fas fa-users"></i>
+              <span>Participants:</span> 
+              <div class="participants-badge">{{ campagne.participant }}</div>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-outline-primary btn-icon" (click)="editCampagne(campagne)" data-bs-toggle="modal" data-bs-target="#campagneModal">
+                <i class="fas fa-edit"></i> Modifier
+              </button>
+              <button class="btn btn-success btn-icon" (click)="validerCampagne(campagne.id)">
+                <i class="fas fa-check"></i> Valider
+              </button>
+              <button class="btn btn-outline-info btn-icon" (click)="viewParticipants(campagne.id)">
+                <i class="fas fa-users"></i> Participants
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  
+    <!-- Campagnes passées -->
+    <div class="campagnes-section" *ngIf="activeSection === 'all' || activeSection === 'past'">
+      <h3 *ngIf="pastCampagnes.length > 0">Campagnes passées</h3>
+      <div class="cards-container">
+        <div class="card" *ngFor="let campagne of pastCampagnes">
+          <div class="card-status" [ngClass]="{
+            'status-pending': campagne.statut === 'en_attente',
+            'status-approved': campagne.statut === 'validee',
+            'status-cancelled': campagne.statut === 'annulee'
+          }">
+            {{ campagne.statut === 'en_attente' ? 'En attente' : 
+               campagne.statut === 'validee' ? 'Validée' : 'Annulée' }}
+          </div>
+          <div class="card-header">
+            <div class="card-title">{{ campagne.theme }}</div>
+            <div class="card-subtitle">{{ campagne.lieu }}</div>
+          </div>
+          <div class="card-content">
+            <div class="card-info">
+              <i class="fas fa-calendar"></i>
+              <span>Date:</span> {{ campagne.date_debut | date: 'dd/MM/yyyy' }} - {{ campagne.date_fin | date: 'dd/MM/yyyy' }}
+            </div>
+            <div class="card-info">
+              <i class="fas fa-clock"></i>
+              <span>Heure:</span> {{ campagne.Heure_debut }} - {{ campagne.Heure_fin }}
+            </div>
+            <div class="card-info">
+              <i class="fas fa-users"></i>
+              <span>Participants:</span> 
+              <div class="participants-badge">{{ campagne.participant }}</div>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-outline-primary btn-icon" (click)="editCampagne(campagne)" data-bs-toggle="modal" data-bs-target="#campagneModal">
+                <i class="fas fa-edit"></i> Modifier
+              </button>
+              <button class="btn btn-success btn-icon" (click)="validerCampagne(campagne.id)">
+                <i class="fas fa-check"></i> Valider
+              </button>
+              <button class="btn btn-outline-info btn-icon" (click)="viewParticipants(campagne.id)">
+                <i class="fas fa-users"></i> Participants
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Message s'il n'y a pas de campagnes -->
+    <div *ngIf="filteredCampagnes.length === 0" class="alert alert-warning">
+      <i class="fas fa-exclamation-triangle me-2"></i> Aucune campagne trouvée.
+    </div>
+  
+    <!-- Bouton d'ajout flottant -->
+    <div class="floating-button" data-bs-toggle="modal" data-bs-target="#campagneModal" (click)="toggleForm()">
+      <i class="fas fa-plus"></i>
+    </div>
   </div>
-
-  <!-- Message s'il n'y a pas de campagnes -->
-  <div *ngIf="filteredCampagnes.length === 0" class="alert alert-warning">
-    Aucune campagne trouvée.
+  
+  <!-- Modal pour le formulaire -->
+  <div class="modal fade" id="campagneModal" tabindex="-1" aria-labelledby="campagneModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="campagneModalLabel">{{ isEditing ? 'Modifier une campagne' : 'Ajouter une campagne' }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="campagneForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="theme" placeholder="Thème" formControlName="theme">
+                  <label for="theme">Thème</label>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="form-floating">
+                  <textarea class="form-control" id="description" placeholder="Description" formControlName="description" style="height: 100px"></textarea>
+                  <label for="description">Description</label>
+                </div>
+              </div>
+              <div class="col-md-12 mb-3">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="lieu" placeholder="Lieu" formControlName="lieu">
+                  <label for="lieu">Lieu</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-floating">
+                  <input type="date" class="form-control" id="date_debut" formControlName="date_debut">
+                  <label for="date_debut">Date de début</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-floating">
+                  <input type="date" class="form-control" id="date_fin" formControlName="date_fin">
+                  <label for="date_fin">Date de fin</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-floating">
+                  <input type="time" class="form-control" id="Heure_debut" formControlName="Heure_debut">
+                  <label for="Heure_debut">Heure de début</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-floating">
+                  <input type="time" class="form-control" id="Heure_fin" formControlName="Heure_fin">
+                  <label for="Heure_fin">Heure de fin</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-floating">
+                  <input type="number" class="form-control" id="participant" placeholder="Nombre de participants" formControlName="participant">
+                  <label for="participant">Nombre de participants</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-floating">
+                  <select class="form-select" id="statut" formControlName="statut">
+                    <option value="en_attente">En attente</option>
+                    <option value="validee">Validée</option>
+                    <option value="annulee">Annulée</option>
+                  </select>
+                  <label for="statut">Statut</label>
+                </div>
+              </div>
+            </div>
+  
+            <!-- ID organisateur et structure sont préremplis -->
+            <input type="hidden" formControlName="organisateur_id">
+            <input type="hidden" formControlName="structure_transfusion_sanguin_id">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmit()">{{ isEditing ? 'Mettre à jour' : 'Publier' }}</button>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <!-- Formulaire -->
-  <div *ngIf="showForm" class="form-section">
-    <h3>{{ isEditing ? 'Modifier une campagne' : 'Ajouter une campagne' }}</h3>
-    <form [formGroup]="campagneForm" (ngSubmit)="onSubmit()">
-      <input type="text" placeholder="Thème" formControlName="theme">
-      <textarea placeholder="Description" formControlName="description"></textarea>
-      <input type="text" placeholder="Lieu" formControlName="lieu">
-      <input type="date" formControlName="date_debut">
-      <input type="date" formControlName="date_fin">
-      <input type="time" formControlName="Heure_debut">
-      <input type="time" formControlName="Heure_fin">
-      <input type="number" placeholder="Nombre de participants" formControlName="participant">
-      <select formControlName="statut">
-        <option value="en_attente">En attente</option>
-        <option value="validee">Validée</option>
-        <option value="annulee">Annulée</option>
-      </select>
-
-      <!-- ID organisateur et structure sont préremplis -->
-      <input type="hidden" formControlName="organisateur_id">
-      <input type="hidden" formControlName="structure_transfusion_sanguin_id">
-
-      <button type="submit">{{ isEditing ? 'Mettre à jour' : 'Publier' }}</button>
-      <button type="button" (click)="cancelForm()">Annuler</button>
-    </form>
-  </div>
-
-  <!-- Bouton d'ajout flottant -->
-  <div class="floating-button" *ngIf="!showForm" (click)="toggleForm()">
-    <i class="fas fa-plus"></i>
-  </div>
-</div>
+  
+  <!-- Scripts -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script> -->
+  </body>

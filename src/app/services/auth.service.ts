@@ -9,6 +9,9 @@ import { User } from '../models/user';
 })
 export class AuthService {
   private apiUrl = 'http://127.0.0.1:8000/api';
+  getCurrentOrganisateur: any;
+  getOrganisateurConnecte: any;
+ 
  
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -35,6 +38,20 @@ export class AuthService {
   getRole(): string | null {
     const role = localStorage.getItem('userRole');
     return role ? role.toLowerCase() : null;
+  }
+  getUserId(): number | null {
+    const token = this.getToken();
+    if (!token) return null;
+  
+    const decoded: any = this.decodeToken(token);
+    return decoded?.user?.id || null;
+  }
+  decodeToken(token: string): any {
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      return null;
+    }
   }
   
   refresh(): Observable<any> {
@@ -129,3 +146,7 @@ export class AuthService {
     return user && user.roles && user.roles.includes('structure');
   }
 }
+function jwtDecode(token: string): any {
+  throw new Error('Function not implemented.');
+}
+

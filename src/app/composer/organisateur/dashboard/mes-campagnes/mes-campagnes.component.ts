@@ -40,6 +40,7 @@ export class MesCampagnesComponent implements OnInit {
   editingCampagneId: number | null = null;
   user: any;
 activeSection: any;
+  organisateur: any;
 
   constructor(
     private campagneService: CampagneService,
@@ -65,30 +66,36 @@ activeSection: any;
   }
 
   ngOnInit(): void {
-    // this.fetchCampagnes();
-    // Get user info from auth service if needed
-    this.getUserInfo();
-  }
-
-  getUserInfo(): void {
-    this.authService.getUserInfo().subscribe({
-      
-      next: (userInfo: any) => {
-        console.log(localStorage.getItem('token'));
-        console.log('User info:', userInfo); // Pour vérifier dans la console
-        this.user = userInfo; // Stocker les informations de l'utilisateur
-        console.log("Utilisateur connecté :", userInfo); // Pour vérifier dans la console
-        
-        this.organisateurId = userInfo.organisateur?.id || null;
-        this.structureId = userInfo.organisateur?.structure_transfusion_sanguin_id || null;
+    const user = this.authService.getUser();
+    if (!user || !user.id) {
+      console.error("Utilisateur non trouvé ou session expirée");
+      return;
+    }
   
-        this.fetchCampagnesByOrganisateur();
-      },
-      error: (error: any) => {
-        console.error('Erreur lors de la récupération des informations utilisateur:', error);
-      }
-    });
+    const id = user.id;
+    this.fetchgetMesCampagnes(); // Ajoute cette ligne pour récupérer les campagnes dès l'initialisation
   }
+  
+
+  // getUserInfo(): void {
+  //   this.authService.getUserInfo().subscribe({
+      
+  //     next: (userInfo: any) => {
+  //       console.log(localStorage.getItem('token'));
+  //       console.log('User info:', userInfo); // Pour vérifier dans la console
+  //       this.user = userInfo; // Stocker les informations de l'utilisateur
+  //       console.log("Utilisateur connecté :", userInfo); // Pour vérifier dans la console
+        
+  //       this.organisateurId = userInfo.organisateur?.id || null;
+  //       this.structureId = userInfo.organisateur?.structure_transfusion_sanguin_id || null;
+  
+  //       this.fetchCampagnesByOrganisateur();
+  //     },
+  //     error: (error: any) => {
+  //       console.error('Erreur lors de la récupération des informations utilisateur:', error);
+  //     }
+  //   });
+  // }
   
   
 
@@ -96,17 +103,17 @@ activeSection: any;
     this.authService.logout();
   }
 
-  fetchCampagnes(): void {
+  fetchgetMesCampagnes(): void {
     console.log('[fetchCampagnes] Appel au service pour récupérer les campagnes...');
-    this.campagneService.getAllCampagnes().subscribe({
-      next: (data) => {
-        console.log('[fetchCampagnes] Données reçues du backend:', data);
-        this.campagnes = data.data; // 
+    this.campagneService.getCampagnes().subscribe({
+      next: (response: any) => {
+        this.campagnes = response.data;
+        console.log('[fetchgetMesCampagnes] Données reçues du backend:', this.campagnes);
         this.filteredCampagnes = this.campagnes;
-        this.filterCampagnes();
+        this.filterCampagnes(); // Filtrer les campagnes en fonction de la date
       },
-      error: (error) => {
-        console.error('[fetchCampagnes] Erreur lors de la récupération des campagnes:', error);
+      error: (error: any) => {
+        console.error('[fetchgetMesCampagnes] Erreur lors de la récupération des campagnes:', error);
         Swal.fire({
           icon: 'error',
           title: 'Erreur',
@@ -115,6 +122,8 @@ activeSection: any;
       }
     });
   }
+  
+  
   
   
 
@@ -208,28 +217,36 @@ activeSection: any;
   }
 
   filterCampagnes(): void {
+    if (!Array.isArray(this.campagnes)) {
+      console.error('Les campagnes ne sont pas un tableau:', this.campagnes);
+      this.todayCampagnes = [];
+      this.upcomingCampagnes = [];
+      this.pastCampagnes = [];
+      return;
+    }
+  
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
+  
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
-
+  
     this.todayCampagnes = this.campagnes.filter((campagne) => {
       const campagneDate = new Date(campagne.date_debut);
       return campagneDate.getTime() >= today.getTime() && campagneDate.getTime() < tomorrow.getTime();
     });
-
+  
     this.upcomingCampagnes = this.campagnes.filter((campagne) => {
       const campagneDate = new Date(campagne.date_debut);
       return campagneDate.getTime() >= tomorrow.getTime();
     });
-
+  
     this.pastCampagnes = this.campagnes.filter((campagne) => {
       const campagneDate = new Date(campagne.date_debut);
       return campagneDate.getTime() < today.getTime();
     });
   }
-
+  
   toggleForm(): void {
     this.showForm = true;
     this.isEditing = false;
@@ -268,7 +285,7 @@ activeSection: any;
         this.campagneService.validerParticipation(participationId).subscribe({
           next: () => {
             Swal.fire('Succès', 'Participation validée avec succès.', 'success');
-            this.fetchCampagnes(); 
+            this.fetchgetMesCampagnes(); 
           },
           error: (error) => {
             console.error('Erreur validation participation :', error);
@@ -292,7 +309,7 @@ activeSection: any;
         this.campagneService.validerCampagne(campagneId).subscribe({
           next: () => {
             Swal.fire('Succès', 'Campagne validée avec succès.', 'success');
-            this.fetchCampagnes();
+            this.fetchgetMesCampagnes();
           },
           error: (error) => {
             console.error('Erreur validation campagne :', error);
@@ -323,7 +340,7 @@ activeSection: any;
         this.campagneService.updateCampagne(this.editingCampagneId, this.campagneForm.value).subscribe(
           (response) => {
             console.log('Campagne updated successfully', response);
-            this.fetchCampagnes();
+            this.fetchgetMesCampagnes();
             this.cancelForm();
             Swal.fire('Succès', 'La campagne a été mise à jour avec succès.', 'success');
           },
@@ -336,7 +353,7 @@ activeSection: any;
         this.campagneService.createCampagne(this.campagneForm.value).subscribe(
           (response) => {
             console.log('Campagne added successfully', response);
-            this.fetchCampagnes();
+            this.fetchgetMesCampagnes();
             this.campagneForm.reset();
             this.showForm = false;
             Swal.fire('Succès', 'La campagne a été ajoutée avec succès.', 'success');
@@ -373,7 +390,7 @@ activeSection: any;
         this.campagneService.deleteCampagne(campagneId).subscribe(
           (response) => {
             Swal.fire('Supprimé!', 'La campagne a été supprimée.', 'success');
-            this.fetchCampagnes();
+            this.fetchgetMesCampagnes();
           },
           (error) => {
             this.handleError(error);

@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, ObservableInput } from 'rxjs';
 import { Campagne } from '../models/campagne';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CampagneService {
+  handleError: ((err: any, caught: Observable<Object>) => ObservableInput<any>) | undefined;
+  getCampagnesOrganisateur: any;
  
   getCampagnes(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl); // Retourne un Observable
     throw new Error('Method not implemented.');
   }
-  private apiUrl = 'http://127.0.0.1:8000/api';
-
+  private apiUrl = 'http://127.0.0.1:8000/api/campagnes'; // Remplacez par l'URL de votre API
+// private apiUrlOrganisateur = 'http://127.0.1:8000/api/organisateurs'; // Remplacez par l'URL de votre API
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders() {
@@ -25,7 +27,14 @@ export class CampagneService {
       })
     };
   }
-
+ getCampagnesByOrganisateurId(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/organisateurs/${id}/campagnes`, this.getAuthHeaders());
+    
+  }
+  getMesCampagnes(): Observable<Campagne[]> {
+    return this.http.get<Campagne[]>(`${this.apiUrl}/mes-campagnes`, this.getAuthHeaders());
+  }
+  
   // Get all campagnes
   getAllCampagnes(): Observable<any> {
     return this.http.get(`${this.apiUrl}/campagnes`, this.getAuthHeaders());
@@ -76,10 +85,7 @@ export class CampagneService {
   getCampagnesByStructureId(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/campagnes/structure/${id}`, this.getAuthHeaders());
   }
-// ✅ Récupérer les campagnes de l'organisateur connecté
-getMesCampagnes(): Observable<any> {
-  return this.http.get(`${this.apiUrl}/mes-campagnes`);
-}
+
 
 getUpcomingCampagnes(): Observable<Campagne[]> {
   return this.http.get<Campagne[]>(`${this.apiUrl}/avenir`);
