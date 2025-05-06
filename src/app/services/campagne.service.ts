@@ -15,7 +15,7 @@ export class CampagneService {
     throw new Error('Method not implemented.');
   }
   private apiUrl = 'http://127.0.0.1:8000/api/campagnes'; // Remplacez par l'URL de votre API
-// private apiUrlOrganisateur = 'http://127.0.1:8000/api/organisateurs'; // Remplacez par l'URL de votre API
+// private apiUrl = 'http://127.0.1:8000/api'; // Remplacez par l'URL de votre API
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders() {
@@ -42,9 +42,9 @@ export class CampagneService {
   
   // Create a new campagne
   createCampagne(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/campagnes`, data, this.getAuthHeaders());
+    return this.http.post(`${this.apiUrl}`,data, this.getAuthHeaders());
   }
-
+  
   
   // Get a specific campagne by ID
   getCampagneById(id: number): Observable<any> {
@@ -57,8 +57,8 @@ export class CampagneService {
   // }
   
   // Update a campagne
-  updateCampagne(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/campagnes/${id}`, data, this.getAuthHeaders());
+  updateCampagne(id: number, campagneData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, campagneData , this.getAuthHeaders());
   }
   
   // Delete a campagne

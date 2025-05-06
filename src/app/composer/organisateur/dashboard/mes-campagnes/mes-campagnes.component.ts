@@ -34,13 +34,13 @@ export class MesCampagnesComponent implements OnInit {
   notificationCount: number = 0;
   organisateurId: number | null = null;
   structureId: number | null = null;
-
   showForm: boolean =true ;
   isEditing: boolean =true;
   editingCampagneId: number | null = null;
   user: any;
 activeSection: any;
   organisateur: any;
+  selectedStructureId: any;
 
   constructor(
     private campagneService: CampagneService,
@@ -127,37 +127,39 @@ activeSection: any;
   
   
 
-  fetchCampagnesByOrganisateur(): void {
-    const organisateurId = this.authService.organisateurId;
-    if (!organisateurId) return; // sécurité
+  // fetchCampagnesByOrganisateur(): void {
+  //   const organisateurId = this.authService.organisateurId;
+  //   if (!organisateurId) return; // sécurité
   
-    this.organisateurService.getCampagnesByOrganisateurId(organisateurId).subscribe({
-      next: (data) => {
-        this.campagnes = data;
-        this.filteredCampagnes = this.campagnes;
-        this.filterCampagnes();
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des campagnes:', error);
-        this.handleError(error);
-      }
-    });
-  }
+  //   this.organisateurService.getCampagnesByOrganisateurId(organisateurId).subscribe({
+  //     next: (data) => {
+  //       this.campagnes = data;
+  //       this.filteredCampagnes = this.campagnes;
+  //       this.filterCampagnes();
+  //     },
+  //     error: (error) => {
+  //       console.error('Erreur lors de la récupération des campagnes:', error);
+  //       this.handleError(error);
+  //     }
+  //   });
+  // }
   
 
-  fetchCampagnesByStructure(structureId: number): void {
-    this.campagneService.getCampagnesByStructureId(structureId).subscribe({
-      next: (data) => {
-        this.campagnes = data;
-        this.filteredCampagnes = this.campagnes;
-        this.filterCampagnes();
-      },
-      error: (error) => {
-        console.error('Error fetching structure campagnes:', error);
-        this.handleError(error);
-      }
-    });
-  }
+  // fetchCampagnesByStructure(structureId: number): void {
+  //   this.campagneService.getCampagnesByStructureId(structureId).subscribe({
+      
+  //     next: (data) => {
+  //       console.log('Structures disponibles:', data);
+  //       this.campagnes = data;
+  //       this.filteredCampagnes = this.campagnes;
+  //       this.filterCampagnes();
+  //     },
+  //     error: (error) => {
+  //       console.error('Error fetching structure campagnes:', error);
+  //       this.handleError(error);
+  //     }
+  //   });
+  // }
 
   getCampagneDetails(campagneId: number): void {
     this.campagneService.getCampagneById(campagneId).subscribe({
@@ -335,41 +337,46 @@ activeSection: any;
   }
   
   onSubmit(): void {
-    if (this.campagneForm.valid) {
-      if (this.isEditing && this.editingCampagneId !== null) {
-        this.campagneService.updateCampagne(this.editingCampagneId, this.campagneForm.value).subscribe(
-          (response) => {
-            console.log('Campagne updated successfully', response);
-            this.fetchgetMesCampagnes();
-            this.cancelForm();
-            Swal.fire('Succès', 'La campagne a été mise à jour avec succès.', 'success');
-          },
-          (error) => {
-            console.error('Error updating campagne:', error);
-            this.handleError(error);
-          }
-        );
-      } else {
-        this.campagneService.createCampagne(this.campagneForm.value).subscribe(
-          (response) => {
-            console.log('Campagne added successfully', response);
-            this.fetchgetMesCampagnes();
-            this.campagneForm.reset();
-            this.showForm = false;
-            Swal.fire('Succès', 'La campagne a été ajoutée avec succès.', 'success');
-          },
-          (error) => {
-            console.error('Error adding campagne:', error);
-            this.handleError(error);
-          }
-        );
-      }
+    if (this.campagneForm.invalid) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Formulaire invalide',
+        text: 'Veuillez remplir tous les champs obligatoires.',
+      });
+      return;
+    }
+  
+    const campagneData = this.campagneForm.value;
+  
+    console.log("Données envoyées:", campagneData);  // Ajoutez cette ligne pour déboguer
+  
+    if (this.isEditing && this.editingCampagneId) {
+      this.campagneService.updateCampagne(this.editingCampagneId, campagneData).subscribe({
+        next: (response) => {
+          Swal.fire('Succès', 'Campagne mise à jour avec succès.', 'success');
+          this.fetchgetMesCampagnes();
+          this.showForm = false;
+        },
+        error: (error) => {
+          console.error('Erreur lors de la mise à jour de la campagne:', error);
+          Swal.fire('Erreur', 'Impossible de mettre à jour la campagne.', 'error');
+        }
+      });
     } else {
-      Swal.fire('Erreur', 'Veuillez remplir tous les champs requis.', 'error');
+      this.campagneService.createCampagne(campagneData).subscribe({
+        next: (response) => {
+          Swal.fire('Succès', 'Campagne créée avec succès.', 'success');
+          this.fetchgetMesCampagnes();
+          this.showForm = false;
+        },
+        error: (error) => {
+          console.error('Erreur lors de la création de la campagne:', error);
+          Swal.fire('Erreur', 'Impossible de créer la campagne.', 'error');
+        }
+      });
     }
   }
-
-  navigateToDetail(campagneId: number): void {
+    navigateToDetail(campagneId: number): void {
     this.router.navigate(['/campagne', campagneId]);
   }
 

@@ -232,6 +232,9 @@
                 <div class="form-floating">
                   <select class="form-select" id="statut" formControlName="statut">
                     <option value="en_attente">En attente</option>
+                    <option value="terminee">Terminée</option>
+                    <option value="en_cours">En cours</option>
+                    <option value="a_venir">A venir</option>
                     <option value="validee">Validée</option>
                     <option value="annulee">Annulée</option>
                   </select>
@@ -239,10 +242,27 @@
                 </div>
               </div>
             </div>
-  
-            <!-- ID organisateur et structure sont préremplis -->
+            <div class="form-group mb-3">
+              <select id="structure_transfusion_sanguin_id" formControlName="structure_transfusion_sanguin_id" class="form-control" required>
+                <option value="">-- Sélectionner --</option>
+                <!-- Vous devrez charger cette liste depuis votre API -->
+                <option value="1">Centre National de Transfusion Sanguine</option>
+                <option value="2">Hôpital Régional</option>
+                <option value="3">Hôpital Universitaire</option>
+                <option value="4">Clinique Privée</option>
+                <option value="5">Centre de Santé</option>
+                <option value="6">Hôpital de District</option>
+                <option value="7">Centre de Transfusion Sanguine</option>
+                <option value="8">Hôpital de la paix de Ziguinchor</option>
+              </select>
+              <label for="structure_transfusion_sanguin_id">Structure de transfusion </label>
+              <div *ngIf="campagneForm.get('structure_transfusion_sanguin_id')?.invalid && campagneForm.get('structure_transfusion_sanguin_id')?.touched" class="text-danger">
+                Structure obligatoire
+              </div>
+            </div>
+            <!-- ID organisateur et structure sont préremplis
             <input type="hidden" formControlName="organisateur_id">
-            <input type="hidden" formControlName="structure_transfusion_sanguin_id">
+            <input type="hidden" formControlName="structure_transfusion_sanguin_id"> -->
           </form>
         </div>
         <div class="modal-footer">
