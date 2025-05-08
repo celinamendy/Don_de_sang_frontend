@@ -130,7 +130,7 @@
           });
 
           setTimeout(() => {
-            this.router.navigate(['/campagnes']);
+            this.router.navigate(['/mes-campagnes']);
           }, 2000);
         },
         error: (err: any) => {

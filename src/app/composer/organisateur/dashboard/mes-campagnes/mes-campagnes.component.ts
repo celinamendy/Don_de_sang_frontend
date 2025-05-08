@@ -38,9 +38,12 @@ export class MesCampagnesComponent implements OnInit {
   isEditing: boolean =true;
   editingCampagneId: number | null = null;
   user: any;
-activeSection: any;
+  activeSection: any;
   organisateur: any;
   selectedStructureId: any;
+  donateursParCampagne: any;
+  donateurs: { [idCampagne: number]: any[] } = {};
+ 
 
   constructor(
     private campagneService: CampagneService,
@@ -74,9 +77,10 @@ activeSection: any;
   
     const id = user.id;
     this.fetchgetMesCampagnes(); // Ajoute cette ligne pour récupérer les campagnes dès l'initialisation
+    this.donateursDeMesCampagnes(id);
   }
   
-
+ 
   // getUserInfo(): void {
   //   this.authService.getUserInfo().subscribe({
       
@@ -123,8 +127,40 @@ activeSection: any;
     });
   }
   
+  // donateursDeMesCampagnes(idCampagne: number): void {
+  //   this.campagneService.donateursDeMaCampagnes(idCampagne).subscribe({
+  //     next: (response) => {
+  //       console.log(`[donateursDeMesCampagnes] Donateurs pour campagne ${idCampagne} :`, response);
+  //       // Tu peux stocker les résultats dans une propriété
+  //       // Exemple : this.donateursParCampagne[idCampagne] = response.data;
+  //     },
+  //     error: (error) => {
+  //       console.error(`[donateursDeMesCampagnes] Erreur pour campagne ${idCampagne} :`, error);
+  //       Swal.fire({
+  //         icon: 'error',
+  //         title: 'Erreur',
+  //         text: 'Impossible de charger les donateurs de cette campagne.',
+  //       });
+  //     }
+  //   });
+  // }
   
   
+  donateursDeMesCampagnes(idCampagne: number): void {
+    this.campagneService.donateursDeMaCampagnes(idCampagne).subscribe({
+      next: (data) => {
+        this.donateurs[idCampagne] = data;
+        console.log(`[donateursDeMesCampagnes] Donateurs pour campagne ${idCampagne} :`, data);
+      },
+      error: (error) => {
+        console.error(`[donateursDeMesCampagnes] Erreur pour campagne ${idCampagne} :`, error);
+      }
+    });
+  }
+  
+  
+
+
   
 
   // fetchCampagnesByOrganisateur(): void {
@@ -165,7 +201,7 @@ activeSection: any;
     this.campagneService.getCampagneById(campagneId).subscribe({
       next: (data) => {
         console.log('Campagne details:', data);
-        // Process the details as needed
+        this.campagnes = data;
       },
       error: (error) => {
         console.error('Error fetching campagne details:', error);
@@ -251,7 +287,7 @@ activeSection: any;
   
   toggleForm(): void {
     this.showForm = true;
-    this.isEditing = false;
+    this.isEditing = true;
     this.campagneForm.reset();
     
     // Set default values if needed, like current user as organisateur
@@ -272,6 +308,7 @@ activeSection: any;
     this.isEditing = true;
     this.editingCampagneId = campagne.id;
     this.campagneForm.patchValue(campagne);
+    // this.deleteCampagne(campagne.id); // Suppression de la campagne après l'édition
   }
   
   validerParticipation(participationId: number): void {
@@ -347,15 +384,18 @@ activeSection: any;
     }
   
     const campagneData = this.campagneForm.value;
-  
+    console.log("Mode édition:", this.isEditing, "ID:", this.editingCampagneId);
     console.log("Données envoyées:", campagneData);  // Ajoutez cette ligne pour déboguer
   
     if (this.isEditing && this.editingCampagneId) {
       this.campagneService.updateCampagne(this.editingCampagneId, campagneData).subscribe({
         next: (response) => {
+          console.log('Réponse backend:', response);
           Swal.fire('Succès', 'Campagne mise à jour avec succès.', 'success');
           this.fetchgetMesCampagnes();
           this.showForm = false;
+          this.isEditing = false;
+          this.editingCampagneId = null;
         },
         error: (error) => {
           console.error('Erreur lors de la mise à jour de la campagne:', error);

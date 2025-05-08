@@ -32,7 +32,7 @@ export class CampagneService {
     
   }
   getMesCampagnes(): Observable<Campagne[]> {
-    return this.http.get<Campagne[]>(`${this.apiUrl}/mes-campagnes`, this.getAuthHeaders());
+    return this.http.get<Campagne[]>(`${this.apiUrl}/campagnes`, this.getAuthHeaders());
   }
   
   // Get all campagnes
@@ -43,6 +43,13 @@ export class CampagneService {
   // Create a new campagne
   createCampagne(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}`,data, this.getAuthHeaders());
+  }
+// recuperer les donateurs d'une campagne
+  // donateursDeMaCampagnes(idCampagne: number): Observable<any> {
+  //   return this.http.get<any>(`${this.apiUrl}/campagnes/${idCampagne}/donateurs`);
+  // }
+  donateursDeMaCampagnes(idCampagne: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}//campagnes/${idCampagne}/donateurs`);
   }
   
   
@@ -63,7 +70,7 @@ export class CampagneService {
   
   // Delete a campagne
   deleteCampagne(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/campagnes/${id}`, this.getAuthHeaders());
+    return this.http.delete(`${this.apiUrl}/${id}`, this.getAuthHeaders());
   }
   
   // Validate a participation

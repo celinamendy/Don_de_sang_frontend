@@ -6,6 +6,7 @@ import { AuthService } from '../../../services/auth.service';
 import { CampagneService } from '../../../services/campagne.service';
 import { Campagne } from '../../../models/campagne';
 import { Router } from '@angular/router';
+import { DashboardOrganisateurService } from '../../../services/dashboard-organisateur.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,11 +25,14 @@ export class DashboardComponent implements AfterViewInit, OnInit {
   pastCampaigns: any[] = [];
   urgentRequests: any[] = [];
   stats: any = {};
+  campagnesParMois: any[] = [];
+  donneursParGroupe: any[] = [];
   filteredCampagnes: Campagne[] = [];
   campagnes: any[] = [];
   showForm: boolean = true;
   isEditing: boolean = true;
   editingCampagneId: number | null = null;
+  // requestsData:any[] = [];
 
   @ViewChild('lineCanvas') lineCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('pieCanvas') pieCanvas!: ElementRef<HTMLCanvasElement>;
@@ -38,6 +42,7 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     private organisateurService: OrganisateurService,
     private authService: AuthService,
     private campagneService: CampagneService,
+    private dashboardService: DashboardOrganisateurService,
     private router: Router
   ) {
     Chart.register(...registerables);
@@ -47,6 +52,9 @@ export class DashboardComponent implements AfterViewInit, OnInit {
     this.organisateur = this.authService.getUser();
     console.log('Utilisateur connecté :', this.organisateur);
     // this.fetchCampagnesByOrganisateur();
+    this.loadDashboardData();
+
+    
   }
 
   ngAfterViewInit(): void {

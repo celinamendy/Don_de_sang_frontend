@@ -58,6 +58,10 @@
               <button class="btn btn-outline-info btn-icon" (click)="viewParticipants(campagne.id)">
                 <i class="fas fa-users"></i> Participants
               </button>
+              <button (click)="deleteCampagne(campagne.id)" class="btn btn-danger">
+                <i class =" fas fa-trash"></i>Supprimer
+              </button>
+              
             </div>
           </div>
         </div>
@@ -105,6 +109,9 @@
               <button class="btn btn-outline-info btn-icon" (click)="viewParticipants(campagne.id)">
                 <i class="fas fa-users"></i> Participants
               </button>
+              <button (click)="deleteCampagne(campagne.id)" class="btn btn-danger">
+                <i class =" fas fa-trash"></i>Supprimer
+              </button>
             </div>
           </div>
         </div>
@@ -149,9 +156,13 @@
               <button class="btn btn-success btn-icon" (click)="validerCampagne(campagne.id)">
                 <i class="fas fa-check"></i> Valider
               </button>
-              <button class="btn btn-outline-info btn-icon" (click)="viewParticipants(campagne.id)">
+              <button class="btn btn-outline-info btn-icon" (click)="donateursDeMesCampagnes(campagne.id)">
                 <i class="fas fa-users"></i> Participants
               </button>
+              <button class="btn btn-danger" (click)="deleteCampagne(campagne.id)">
+                <i class="fas fa-trash"></i>Supprimer
+              </button>
+
             </div>
           </div>
         </div>
@@ -170,7 +181,7 @@
   </div>
   
   <!-- Modal pour le formulaire -->
-  <div class="modal fade" id="campagneModal" tabindex="-1" aria-labelledby="campagneModalLabel" aria-hidden="true">
+  <div #campagneModal class="modal fade" id="campagneModal" tabindex="-1" aria-labelledby="campagneModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -272,7 +283,40 @@
       </div>
     </div>
   </div>
-  
+ <!-- MODAL LISTE DES DONATEURS
+<div class="modal fade" id="donateursModal" tabindex="-1" aria-labelledby="donateursModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="donateursModalLabel">Liste des Donateurs</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Email</th>
+              <th>Groupe sanguin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let donateur of donateursParCampagne">
+              <td>{{ donateur.nom }}</td>
+              <td>{{ donateur.prenom }}</td>
+              <td>{{ donateur.email }}</td>
+              <td>{{ donateur.groupe_sanguin?.libelle }}</td>
+            </tr>
+            <tr *ngIf="donateursParCampagne.length === 0">
+              <td colspan="4" class="text-center">Aucun donateur inscrit à cette campagne.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div> -->
   <!-- Scripts -->
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script> -->
   </body>
