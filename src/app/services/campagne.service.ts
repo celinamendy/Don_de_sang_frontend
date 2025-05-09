@@ -28,16 +28,16 @@ export class CampagneService {
     };
   }
  getCampagnesByOrganisateurId(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/organisateurs/${id}/campagnes`, this.getAuthHeaders());
+    return this.http.get(`${this.apiUrl}/organisateurs/${id}/`, this.getAuthHeaders());
     
   }
   getMesCampagnes(): Observable<Campagne[]> {
-    return this.http.get<Campagne[]>(`${this.apiUrl}/campagnes`, this.getAuthHeaders());
+    return this.http.get<Campagne[]>(`${this.apiUrl}/`, this.getAuthHeaders());
   }
   
   // Get all campagnes
   getAllCampagnes(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/campagnes`, this.getAuthHeaders());
+    return this.http.get(`${this.apiUrl}/`, this.getAuthHeaders());
   }
   
   // Create a new campagne
@@ -98,7 +98,12 @@ getUpcomingCampagnes(): Observable<Campagne[]> {
   return this.http.get<Campagne[]>(`${this.apiUrl}/avenir`);
 }
 
-registerForCampagne(idCampagne: string): Observable<any> {
-  return this.http.post(`${this.apiUrl}/${idCampagne}/inscription`, {});
+// inscrireDonateur( campagneId: number): Observable<any> {
+//   return this.http.post(`${this.apiUrl}/${campagneId}/inscription`,this.getAuthHeaders());
+// }
+inscrireDonateur(data: { donateurId: number, campagneId: number }) {
+  return this.http.post(`${this.apiUrl}/${data.campagneId}/inscription`, data, this.getAuthHeaders());
 }
+
+
 }

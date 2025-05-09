@@ -69,6 +69,7 @@ import { AuthService } from './../../../services/auth.service';
 import { CampagneService } from '../../../services/campagne.service';
 import { EligibilityService } from '../../../services/eligibility.service';
 import { NotificationService } from '../../../services/notification.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -139,23 +140,34 @@ donateur: any;
     });
   }
 
-  inscrireACampagne(idCampagne: string): void {
-    this.campagneService.registerForCampagne(idCampagne).subscribe({
-      next: () => {
-        const index = this.campagnesAVenir.findIndex(c => c.id === Number(idCampagne));        if (index > -1) {
-          this.campagnesAVenir[index] = {
-            ...this.campagnesAVenir[index],
-            isUserRegistered: true
-          };
-        }
-        this.chargerCampagnes();
-      },
-      error: (erreur) => {
-        console.error('Erreur lors de l’inscription à la campagne', erreur);
-      }
-    });
-  }
-
+  // inscrireACampagne(idCampagne: string): void {
+  //   this.campagneService.registerForCampagne(idCampagne).subscribe({
+  //     next: () => {
+  //       const index = this.campagnesAVenir.findIndex(c => c.id === Number(idCampagne));        if (index > -1) {
+  //         this.campagnesAVenir[index] = {
+  //           ...this.campagnesAVenir[index],
+  //           isUserRegistered: true
+  //         };
+  //       }
+  //       this.chargerCampagnes();
+  //     },
+  //     error: (erreur) => {
+  //       console.error('Erreur lors de l’inscription à la campagne', erreur);
+  //     }
+  //   });
+  // }
+//  inscrireDonateur(campagneId: number): void {
+//     this.campagneService.inscrireDonateur(campagneId).subscribe({
+//       next: (response) => {
+//         console.log('Inscription réussie :', response);
+//         Swal.fire('Succès', 'Vous êtes inscrit à la campagne.', 'success');
+//       },
+//       error: (error) => {
+//         console.error('Erreur d\'inscription :', error);
+//         Swal.fire('Erreur', 'Impossible de s\'inscrire à cette campagne.', 'error');
+//       }
+//     });
+//   }
   chargerCampagnes(): void {
     this.campagneService.getUpcomingCampagnes().subscribe({
       next: (campagnes) => {

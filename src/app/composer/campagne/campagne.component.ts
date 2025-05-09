@@ -403,7 +403,12 @@ import { CampagneService } from '../../services/campagne.service';
 import { Campagne } from '../../models/campagne';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 import { Modal } from 'bootstrap';
+import { DonateurService } from '../../services/donateur.service';
+import { EligibilityService } from '../../services/eligibility.service';
+import { Donateur } from '../../models/donateur';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-campagne',
@@ -431,20 +436,47 @@ export class CampagneComponent implements OnInit, AfterViewInit {
   editingCampagneId: number | null = null;
   user: any;
   selectedFilter: string = 'all';
-  selectedCampagne: Campagne | null = null;
+   selectedCampagneId: number | null = null;
+  showEligibiliteModal: boolean = false;
+  
+  
 
   @ViewChild('campagneModal') campagneModalRef!: ElementRef;
   modalInstance: any;
-  constructor(private campagneService: CampagneService) {}
+
+eligibiliteForm: FormGroup = this.fb.group({
+  sexe: ['', Validators.required],
+  date_naissance: ['', Validators.required],
+  poids: ['', [Validators.required, Validators.min(50)]],
+  antecedent_medicament: ['Aucun', Validators.required],
+  date_dernier_don: ['']
+});
+campagne: any;
+
+
+  
+  constructor(
+    private fb: FormBuilder,
+    private campagneService: CampagneService,
+    private authService: AuthService,
+    private donateurService: DonateurService,
+    private eligibilityService: EligibilityService,
+  ) {}
   ngAfterViewInit(): void {
     // Dynamically import Bootstrap to avoid SSR/Vite 'document is not defined'
     import('bootstrap').then(({ Modal }) => {
       this.modalInstance = new Modal(this.campagneModalRef.nativeElement);
     });
   }
+
+  
   ngOnInit(): void {
+    this.user = this.authService.getUser(); // ou autre méthode
+    console.log("Utilisateur chargé dans ngOnInit :", this.user);
     console.log('CampagneComponent initialisé');
     this.getAllCampagnes();
+    // this.inscrireDonateur(1); // Exemple d'inscription à une campagne avec ID 1
+    
   }
 
   getAllCampagnes() {
@@ -461,27 +493,103 @@ export class CampagneComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  getCampagneDetail(id: number): void {
-    this.campagneService.getCampagneById(id).subscribe({
-      next: (data) => {
-        this.selectedCampagne = data;
-        this.showModal();
-      },
-      error: (err) => console.error('Erreur récupération campagne', err)
+    // Méthode pour ouvrir la modale d'éligibilité
+  ouvrirModalEligibilite(campagneId: number): void {
+    this.selectedCampagneId = campagneId;
+    this.showEligibiliteModal = true;
+  }
+  verifierEligibilite(campagneId: number) {
+  if (this.eligibiliteForm.invalid) return;
+  console.log('Formulaire d\'éligibilité valide, envoi des données...');
+  const donnees = this.eligibiliteForm.value;
+
+  this.authService.getUser().subscribe((donateur: Donateur) => {
+    const donateurId = this.user.id;
+    console.log('ID de la campagne:', campagneId)
+    this.donateurService.mettreAJourInfosDonateur(donateurId, donnees).subscribe(() => {
+      this.eligibilityService.verifierEligibilite(donateurId).subscribe((res: any) => {
+        if (res.est_eligible) {
+          Swal.fire('Éligible 🎉', 'Vous pouvez participer à la campagne.', 'success');
+          this.inscrireDonateur(campagneId); // ✅ ici, on utilise campagneId bien défini
+        } else {
+          Swal.fire('Non éligible ❌', res.problemes.join('<br>'), 'error');
+        }
+      });
     });
+  });
+}
+// Méthode pour fermer la modale d'éligibilité
+  fermerModalEligibilite(): void {
+    this.selectedCampagneId = null;
+    this.showEligibiliteModal = false;
   }
 
-  showModal(): void {
-    if (this.modalInstance) {
-      this.modalInstance.show();
-    } else {
-      // Fallback si la modale n’est pas encore initialisée
-      import('bootstrap').then(({ Modal }) => {
-        this.modalInstance = new Modal(this.campagneModalRef.nativeElement);
-        this.modalInstance.show();
+  
+  inscrireDonateur(campagneId: number) {
+    if (!this.user || !this.user.id) {
+      console.log("Utilisateur non connecté ou donateur non défini :", this.user);
+  
+      Swal.fire({
+        icon: 'warning',
+        title: 'Non connecté',
+        text: 'Vous devez être connecté en tant que donateur pour vous inscrire à une campagne.',
       });
+      return;
     }
+  
+    const donateurId = this.user.id;
+  
+    this.campagneService.inscrireDonateur({ donateurId, campagneId }).subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Inscription réussie',
+          text: 'Vous êtes maintenant inscrit à cette campagne.',
+        });
+        this.getAllCampagnes(); // facultatif : mise à jour de l'affichage
+      },
+      error: (error) => {
+        console.error('Erreur inscription à la campagne :', error);
+  
+        if (error.status === 409) {
+          Swal.fire({
+            icon: 'info',
+            title: 'Déjà inscrit',
+            text: 'Vous êtes déjà inscrit à cette campagne.',
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: 'Une erreur est survenue lors de l’inscription. Veuillez réessayer.',
+          });
+        }
+      }
+    });
   }
+  
+  
+  // getCampagneDetail(id: number): void {
+  //   this.campagneService.getCampagneById(id).subscribe({
+  //     next: (data) => {
+  //       this.selectedCampagne = data;
+  //       this.showModal();
+  //     },
+  //     error: (err) => console.error('Erreur récupération campagne', err)
+  //   });
+  // }
+
+  // showModal(): void {
+  //   if (this.modalInstance) {
+  //     this.modalInstance.show();
+  //   } else {
+  //     // Fallback si la modale n’est pas encore initialisée
+  //     import('bootstrap').then(({ Modal }) => {
+  //       this.modalInstance = new Modal(this.campagneModalRef.nativeElement);
+  //       this.modalInstance.show();
+  //     });
+  //   }
+  // }
   
   applyFilter(): void {
     console.log('Filtrage avec searchTerm :', this.searchTerm);

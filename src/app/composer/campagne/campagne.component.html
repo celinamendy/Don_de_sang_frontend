@@ -4,7 +4,7 @@
 
 <div class="container mt-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>listes des Campagnes</h2>
+    <h2>Listes des Campagnes</h2>
     <!-- <button class="btn btn-primary">
       <i class="fas fa-plus me-2"></i> Nouvelle Campagne
     </button> -->
@@ -50,15 +50,67 @@
           </div>
           
           <div class="mt-3 d-flex justify-content-between">
-           <button  class="btn btn-outline-info"(click)="getCampagneDetail(campagne.id)">
+            <!-- <button class="btn btn-outline-info" (click)="getCampagneDetail(campagne.id)">
               <i class="fas fa-eye me-1"></i> Voir
-            </button>
-            <button class="btn btn-outline-secondary">
+            </button> -->
+            <button class="btn btn-outline-secondary" (click)="inscrireDonateur(campagne.id)">
               <i class="fas fa-pen me-1"></i> S'inscrire
             </button>
-
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Éligibilité -->
+<div *ngIf="showEligibiliteModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="eligibiliteModalLabel" aria-hidden="true" style="display: block;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eligibiliteModalLabel">Vérification d'Éligibilité</h5>
+        <button type="button" class="close" (click)="showEligibiliteModal = false" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="eligibiliteForm" (ngSubmit)="verifierEligibilite(campagne.id)">
+          <div class="form-group">
+            <label for="sexe">Sexe :</label>
+            <select formControlName="sexe" id="sexe" class="form-control">
+              <option value="Homme">Homme</option>
+              <option value="Femme">Femme</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="date_naissance">Date de naissance :</label>
+            <input type="date" formControlName="date_naissance" id="date_naissance" class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <label for="poids">Poids (kg) :</label>
+            <input type="number" formControlName="poids" id="poids" class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <label for="antecedent_medicament">Antécédents médicaux :</label>
+            <input type="text" formControlName="antecedent_medicament" id="antecedent_medicament" class="form-control" />
+          </div>
+
+          <div class="form-group">
+            <label for="date_dernier_don">Date du dernier don (optionnel) :</label>
+            <input type="date" formControlName="date_dernier_don" id="date_dernier_don" class="form-control" />
+          </div>
+
+          <!-- Bouton pour ouvrir le modal avec la campagne -->
+          <button class="btn btn-outline-info" (click)="ouvrirModalEligibilite(campagne.id)">
+            <i class="fas fa-eye me-1"></i> Voir
+          </button>
+
+        </form>
+        <!-- Bouton pour fermer le modal -->
+        <button (click)="fermerModalEligibilite()">Fermer</button>
       </div>
     </div>
   </div>

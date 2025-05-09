@@ -17,4 +17,7 @@ export class EligibilityService {
   startEligibilityTest(): Observable<any> {
     return this.http.post(`${this.apiUrl}/tester`, {});
   }
+    verifierEligibilite(donateurId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/eligibilite/${donateurId}`);
+  }
 }

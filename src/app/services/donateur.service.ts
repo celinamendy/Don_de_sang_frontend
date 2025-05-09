@@ -29,7 +29,10 @@ export class DonateurService {
   getCampagnesDonateur(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/campagnes`);
   }
-
+  // Mettre à jour les informations d’un donateur
+  mettreAJourInfosDonateur(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/donateurs/${id}`, data);
+  }
   participerACampagne(userId: string, campagneId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/campagnes/${campagneId}/participer`, { userId })
       .pipe(catchError(this.gererErreur));
