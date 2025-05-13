@@ -6,6 +6,8 @@ import { CampagneComponent } from './composer/campagne/campagne.component';
 import { PublierComponent } from './composer/campagne/publier/publier.component';
 import { ListesComponent } from './composer/campagne/listes/listes.component';
 import { MesCampagnesComponent } from './composer/organisateur/dashboard/mes-campagnes/mes-campagnes.component';
+import { HistoriquesComponent } from './composer/donateur/historiques/historiques.component';
+// ✅ Correct
 // import { DetailComponent } from './composer/campagne/detail.component';
 export const routes: Routes = [
     { path: '', redirectTo: 'accueil', pathMatch: 'full' }, // Redirection par défaut vers 'accueil'
@@ -16,7 +18,7 @@ export const routes: Routes = [
     { path: 'campagnes/publier', component: PublierComponent }, // Route pour publier une campagne
     { path: 'liste', component: ListesComponent }, // Route pour publier une campagne
     // { path: 'organisateur/dashboard', loadComponent: () => import('./composer/organisateur/dashboard/dashboard.component').then(m => m.DashboardComponent) },
-
+    { path: 'historique', component: HistoriquesComponent },
     // Organisateur Dashboard
   { path: 'organisateurs/dashboard', loadComponent: () => import('./composer/organisateur/dashboard/dashboard.component').then(m => m.DashboardComponent) },
   { path: 'mes-campagnes',component: MesCampagnesComponent},

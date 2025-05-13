@@ -1,26 +1,45 @@
 <body>
+  <!-- Polices et icônes -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <div class="container">
     
     <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="logo">
-          <div class="logo-icon"><i class="fas fa-tint"></i></div>
-          <span>Don de Sang</span>
-        </div>
+    <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon"><i class="fas fa-tint"></i></div>
+        <span>Don de Sang</span>
       </div>
-      <ul class="nav-links">
-        <li class="active">
-          <a href="#"><i class="fas fa-home"></i><span>Tableau de bord</span></a>
-        </li>
-        <li><a href="#"><i class="fas fa-calendar-alt"></i><span>Campagnes</span></a></li>
-        <li><a href="#"><i class="fas fa-history"></i><span>Historique</span></a></li>
-        <li><a href="#"><i class="fas fa-heart"></i><span>Éligibilité</span></a></li>
-        <li><a href="#"><i class="fas fa-medal"></i><span>Badges</span></a></li>
-        <li><a href="#"><i class="fas fa-map-marker-alt"></i><span>Points de collecte</span></a></li>
-        <li><a href="#"><i class="fas fa-cog"></i><span>Paramètres</span></a></li>
-      </ul>
-    </aside>
+    </div>
+    <ul class="nav-links">
+      <li class="active">
+        <a routerLink="/" routerLinkActive="active"><i class="fas fa-home"></i><span>Tableau de bord</span></a>
+      </li>
+      <li>
+        <a routerLink="/campagnes" routerLinkActive="active"><i class="fas fa-calendar-alt"></i><span>Campagnes</span></a>
+      </li>
+      <li>
+        <a routerLink="/historique" routerLinkActive="active"><i class="fas fa-history"></i><span>Historique</span></a>
+      </li>
+      <li>
+        <a routerLink="/eligibilite" routerLinkActive="active"><i class="fas fa-heart"></i><span>Éligibilité</span></a>
+      </li>
+      <li>
+        <a routerLink="/badges" routerLinkActive="active"><i class="fas fa-medal"></i><span>Badges</span></a>
+      </li>
+      <li>
+        <a routerLink="/points-collecte" routerLinkActive="active"><i class="fas fa-map-marker-alt"></i><span>Points de collecte</span></a>
+      </li>
+      <li>
+        <a routerLink="/parametres" routerLinkActive="active"><i class="fas fa-cog"></i><span>Paramètres</span></a>
+      </li>
+    </ul>
+  </aside>
+  <div class="content">
+    
+  </div>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -28,7 +47,7 @@
       <!-- Header -->
       <div class="header">
         <div class="header-title">
-          <h1>Bienvenue, {{ donateur.nom }} {{ donateur.prenom }} sur votre espace donateur !</h1>
+          <h1>Bienvenue, {{ user?.nom }} sur votre espace donateur !</h1>
         </div>
         <div class="user-info">
           <div class="notification">
@@ -36,8 +55,8 @@
             <span class="notification-count">3</span>
           </div>
           <div class="user-profile">
-            <div class="avatar">A</div>
-            <span>Amadou D.</span>
+            <div class="avatar"></div>
+            <span>{{ user?.nom }}</span>
             <i class="fas fa-chevron-down"></i>
           </div>
         </div>
@@ -48,7 +67,7 @@
         <div class="card stat-card">
           <div class="stat-icon donations"><i class="fas fa-tint"></i></div>
           <div class="stat-info">
-            <h3>{{ historiqueDons.length }}</h3>
+            <h3>{{ historique.length }}</h3>
             <p>Dons effectués</p>
           </div>
         </div>
@@ -79,66 +98,41 @@
       <section class="campaigns-section">
         <div class="section-header">
           <h2>Campagnes à venir</h2>
-          <a href="#" class="view-all">Voir tout</a>
+          <a routerLink="/campagnes" routerLinkActive="active">Voir tout</a>
         </div>
-        <div class="campaigns-grid">
-          <!-- Card 1 -->
-          <div class="card campaign-card">
-            <div class="campaign-img">
-              <div class="campaign-status upcoming">À venir</div>
-            </div>
-            <div class="campaign-info">
-              <h3>Journée Nationale du Don de Sang</h3>
-              <div class="campaign-details">
-                <div class="campaign-detail"><i class="fas fa-calendar"></i><span>12 mai 2025</span></div>
-                <div class="campaign-detail"><i class="fas fa-map-marker-alt"></i><span>Hôpital Principal de Dakar</span></div>
-                <div class="campaign-detail"><i class="fas fa-clock"></i><span>09:00 - 17:00</span></div>
-              </div>
-              <div class="campaign-actions">
-                <button class="btn btn-primary">S'inscrire</button>
-                <button class="btn btn-outline">En savoir plus</button>
-              </div>
-            </div>
+          <!-- <div class="campagnes-section" *ngIf="activeSection === 'all' || activeSection === 'upcoming'"> -->
+        <h3 *ngIf="upcomingCampagnes.length > 4">Campagnes à venir</h3>
+        <div class="cards-container">
+        <div class="card" *ngFor="let campagne of upcomingCampagnes">
+          <div class="card-status" [ngClass]="{
+            'status-pending': campagne.statut === 'en_attente',
+            'status-approved': campagne.statut === 'validee',
+            'status-cancelled': campagne.statut === 'annulee'
+          }">
+            {{ campagne.statut === 'en_attente' ? 'En attente' : 
+              campagne.statut === 'validee' ? 'Validée' : 'Annulée' }}
           </div>
-
-          <!-- Card 2 -->
-          <div class="card campaign-card">
-            <div class="campaign-img">
-              <div class="campaign-status active">En cours</div>
-            </div>
-            <div class="campaign-info">
-              <h3>Don de Sang Université Cheikh Anta Diop</h3>
-              <div class="campaign-details">
-                <div class="campaign-detail"><i class="fas fa-calendar"></i><span>Aujourd'hui - 30 avril 2025</span></div>
-                <div class="campaign-detail"><i class="fas fa-map-marker-alt"></i><span>Campus UCAD, Dakar</span></div>
-                <div class="campaign-detail"><i class="fas fa-clock"></i><span>10:00 - 16:00</span></div>
-              </div>
-              <div class="campaign-actions">
-                <button class="btn btn-primary">S'inscrire</button>
-                <button class="btn btn-outline">En savoir plus</button>
-              </div>
-            </div>
+          <div class="card-header">
+            <div class="card-title">{{ campagne.theme }}</div>
+            <div class="card-subtitle">{{ campagne.lieu }}</div>
           </div>
-
-          <!-- Card 3 -->
-          <div class="card campaign-card">
-            <div class="campaign-img">
-              <div class="campaign-status upcoming">À venir</div>
+          <div class="card-content">
+            <div class="card-info">
+              <i class="fas fa-calendar"></i>
+              <span>Date:</span> {{ campagne.date_debut | date: 'dd/MM/yyyy' }} - {{ campagne.date_fin | date: 'dd/MM/yyyy' }}
             </div>
-            <div class="campaign-info">
-              <h3>Collecte de sang - Centre National</h3>
-              <div class="campaign-details">
-                <div class="campaign-detail"><i class="fas fa-calendar"></i><span>15 mai 2025</span></div>
-                <div class="campaign-detail"><i class="fas fa-map-marker-alt"></i><span>Centre National de Transfusion Sanguine, Dakar</span></div>
-                <div class="campaign-detail"><i class="fas fa-clock"></i><span>08:00 - 18:00</span></div>
-              </div>
-              <div class="campaign-actions">
-                <button class="btn btn-primary">S'inscrire</button>
-                <button class="btn btn-outline">En savoir plus</button>
-              </div>
+            <div class="card-info">
+              <i class="fas fa-clock"></i>
+              <span>Heure:</span> {{ campagne.Heure_debut }} - {{ campagne.Heure_fin }}
+            </div>
+            <div class="card-info">
+              <i class="fas fa-users"></i>
+              <span>Participants:</span> 
+              <div class="participants-badge">{{ campagne.participant }}</div>
             </div>
           </div>
         </div>
+      </div>
       </section>
 
       <!-- Santé & Historique -->

@@ -11,7 +11,7 @@ import { Participation } from '../models/participation';
   providedIn: 'root'
 })
 export class DonateurService {
-  private apiUrl = 'http://localhost:8000/api/dashboard'; // modifie selon ton backend
+  private apiUrl = 'http://localhost:8000/api'; // modifie selon ton backend
 
   constructor(private http: HttpClient) {}
 
@@ -25,7 +25,15 @@ export class DonateurService {
       catchError(this.handleError)
     );
   }
-
+  private getAuthHeaders() {
+    const token = localStorage.getItem('access_token');
+    console.log('le token est présent dans le localstorage ...');
+    return {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    };
+  }
   getCampagnesDonateur(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/campagnes`);
   }
@@ -33,24 +41,26 @@ export class DonateurService {
   mettreAJourInfosDonateur(id: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/donateurs/${id}`, data);
   }
-  participerACampagne(userId: string, campagneId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/campagnes/${campagneId}/participer`, { userId })
-      .pipe(catchError(this.gererErreur));
-  }
+  // participerACampagne(userId: string, campagneId: string): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/campagnes/${campagneId}/participer`, { userId })
+  //     .pipe(catchError(this.gererErreur));
+  // }
 
-  recupererProfilActuel(): Observable<User> {
-    return this.http.get<User>(`${this.apiUrl}/donateur/profil`)
-      .pipe(catchError(this.gererErreur));
-  }
-
-  recupererHistoriqueDons(userId: string): Observable<Campagne[]> {
-    return this.http.get<Campagne[]>(`${this.apiUrl}/dashboard/user/${userId}`)
-      .pipe(catchError(this.gererErreur));
-  }
-  getDonateurHistory(): Observable<Participation[]> {
-    return this.http.get<Participation[]>(`${this.apiUrl}/Daashboard/historique`)
-      .pipe(catchError(this.gererErreur));
-  }
+  // recupererProfilActuel(): Observable<User> {
+  //   return this.http.get<User>(`${this.apiUrl}/donateur/profil`)
+  //     .pipe(catchError(this.gererErreur));
+  // }
+  getCampagnesHistoriqueDonateur(): Observable<Campagne[]> {
+  return this.http.get<any>(`${this.apiUrl}/participations/historiques`, this.getAuthHeaders());
+}
+  // recupererHistoriqueDons(userId: string): Observable<Campagne[]> {
+  //   return this.http.get<Campagne[]>(`${this.apiUrl}/dashboard/user/${userId}`)
+  //     .pipe(catchError(this.gererErreur));
+  // }
+  // getDonateurHistory(): Observable<Participation[]> {
+  //   return this.http.get<Participation[]>(`${this.apiUrl}/Daashboard/historique`)
+  //     .pipe(catchError(this.gererErreur));
+  // }
   // ✅ NOUVELLE MÉTHODE : pour vérifier le donateur connecté
   // getDonateur(): Observable<User> {
   //   const token = this.getToken();

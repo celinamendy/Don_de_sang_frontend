@@ -70,27 +70,33 @@ import { CampagneService } from '../../../services/campagne.service';
 import { EligibilityService } from '../../../services/eligibility.service';
 import { NotificationService } from '../../../services/notification.service';
 import Swal from 'sweetalert2';
+import { DateTime } from 'luxon';
+import { HistoriquesComponent } from '../historiques/historiques.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule],
-  templateUrl: './dashboard.component.html',
+  imports: [CommonModule, RouterModule, HistoriquesComponent],
+templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   user: User | null = null;
-  campagnesAVenir: Campagne[] = [];
-  historiqueDons: Participation[] = [];
+  // campagnesAVenir: Campagne[] = [];
+  historique: any[] = [];
   criteresEligibilite: CritereEligibilite[] = [];
   enChargement = true;
-
+getCampagnesHistoriqueDonateur: Campagne[] = [];
+upcomingCampagnes: Campagne[] = [];
+  campagnesAVenir: any[] = [];
+  campagnesDuJour: any[] = [];
   private authService = inject(AuthService);
   private campagneService = inject(CampagneService);
-  private donService = inject(DonateurService);
+  private donateurService = inject(DonateurService);
   private eligibiliteService = inject(EligibilityService);
   private notificationService = inject(NotificationService);
-donateur: any;
+  donateur: any;
+  donsEffectues: number = 0;
 
   get userActuel() {
     return this.authService.currentUser();
@@ -101,31 +107,42 @@ donateur: any;
   }
 
   ngOnInit(): void {
+     this.user = this.authService.getUser() // ou autre méthode
+    console.log("Utilisateur chargé dan;s ngOnInit :", this.user);
+    console.log('CampagneComponent initialisé');
     this.chargerDonneesDashboard();
+    this.getCampagnesAVenir();
   }
 
   chargerDonneesDashboard(): void {
     this.enChargement = true;
 
     this.user = this.authService.currentUser();
+    this.donateurService.getCampagnesHistoriqueDonateur();
 
-    this.campagneService.getUpcomingCampagnes().subscribe({
-      next: (campagnes) => {
-        this.campagnesAVenir = campagnes;
+    // this.campagneService.getCampagnesAVenir().subscribe({
+    //   next: (campagnes) => {
+    //     this.campagnesAVenir = campagnes;
+    //   },
+    //   error: (err) => {
+    //     console.error('Erreur lors de la récupération des campagnes à venir', err);
+    //   }
+    // });
+  
+
+     this.donateurService.getCampagnesHistoriqueDonateur().subscribe({
+      next: (data) => {
+        this.historique = data; // Assure-toi que les données sont bien dans le format attendu
       },
-      error: (erreur) => {
-        console.error('Erreur lors du chargement des campagnes', erreur);
+      error: (error) => {
+        console.error('Erreur lors de la récupération de l’historique des campagnes', error);
       }
     });
-
-    this.donService.getDonateurHistory().subscribe({
-      next: (dons) => {
-        this.historiqueDons = dons;
-      },
-      error: (erreur) => {
-        console.error('Erreur lors du chargement de l’historique des dons', erreur);
-      }
-    });
+     
+ 
+  
+  
+  
 
     this.eligibiliteService.checkEligibility().subscribe({
       next: (resultat) => {
@@ -168,16 +185,13 @@ donateur: any;
 //       }
 //     });
 //   }
-  chargerCampagnes(): void {
-    this.campagneService.getUpcomingCampagnes().subscribe({
-      next: (campagnes) => {
-        this.campagnesAVenir = campagnes;
-      },
-      error: (erreur) => {
-        console.error('Erreur lors du rechargement des campagnes', erreur);
-      }
-    });
-  }
+  getCampagnesAVenir(): void {
+    this.user = this.authService.currentUser();
+    this.campagneService.getCampagnesAVenir().subscribe({
+    next: (data) => this.campagnesAVenir = data,
+    error: (err) => console.error('Erreur lors de la récupération des campagnes à venir', err)
+  });
+}
 
   lancerTestEligibilite(): void {
     this.eligibiliteService.startEligibilityTest().subscribe({

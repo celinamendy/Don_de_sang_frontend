@@ -49,13 +49,14 @@ export class CampagneService {
   //   return this.http.get<any>(`${this.apiUrl}/campagnes/${idCampagne}/donateurs`);
   // }
   donateursDeMaCampagnes(idCampagne: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}//campagnes/${idCampagne}/donateurs`);
+    return this.http.get<any>(`${this.apiUrl}/campagnes/${idCampagne}/donateurs`);
   }
-  
+
+
   
   // Get a specific campagne by ID
   getCampagneById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/campagnes/${id}`, this.getAuthHeaders());
+    return this.http.get(`${this.apiUrl}/${id}`, this.getAuthHeaders());
   }
   
   // // Get campagnes by organisateur ID
@@ -94,7 +95,7 @@ export class CampagneService {
   }
 
 
-getUpcomingCampagnes(): Observable<Campagne[]> {
+getCampagnesAVenir(): Observable<Campagne[]> {
   return this.http.get<Campagne[]>(`${this.apiUrl}/avenir`);
 }
 
