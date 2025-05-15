@@ -1,4 +1,4 @@
-<!-- app.component.html -->
+<!-- dashboard.component.html (avec l'onglet Demandes corrigé) -->
 <div class="d-flex flex-column min-vh-100">
   <!-- Header -->
   <header class="bg-danger text-white py-3 shadow">
@@ -10,303 +10,291 @@
         </div>
         <div class="d-flex align-items-center">
           <div class="text-end me-3">
-            <p class="mb-0">Structure : {{ organisateur?.structure?.nom }}</p>
+            <!-- <p class="mb-0">Structure : {{ organisateur?.structure?.nom }}</p> -->
             <!-- Ajout des infos organisateur ici -->
             <div class="organisateur-info text-white small mt-2">
               <h2 class="h6 mb-0">Bienvenue, {{ organisateur?.nom }}</h2>
               <p class="mb-0">{{ organisateur?.email }}</p>
             </div>
           </div>
-          <div class="bg-white text-danger rounded-circle p-2">
+          <!-- <div class="bg-white text-danger rounded-circle p-2">
             <i class="fas fa-users fa-sm"></i>
-          </div>
-          <button class="action-btn" (click)="logout()">Déconnexion</button>
+          </div> -->
+          <button class="logout-btn" (click)="logout()"><i class="fas fa-sign-out-alt"></i>Déconnexion</button>
         </div>
       </div>
     </div>
   </header>
 
-  
-    <!-- Navigation -->
-    <nav class="bg-white shadow-sm">
-      <div class="container">
-        <ul class="nav nav-tabs border-0">
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="activeTab === 'overview'" (click)="setActiveTab('overview')" href="javascript:void(0)">
-              Vue d'ensemble
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="activeTab === 'mes-campagnes'" (click)="setActiveTab('mes-campagnes')" href="javascript:void(0)">
-              Mes Campagnes
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="activeTab === 'stocks'" (click)="setActiveTab('stocks')" href="javascript:void(0)">
-              Stocks
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="activeTab === 'requests'" (click)="setActiveTab('requests')" href="javascript:void(0)">
-              Demandes
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [class.active]="activeTab === 'reports'" (click)="setActiveTab('reports')" href="javascript:void(0)">
-              Rapports
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  
-    <!-- Main Content -->
-    <main class="flex-grow-1 py-4 bg-light">
-      <div class="container">
-        <!-- Overview Tab -->
-        <div *ngIf="activeTab === 'overview'">
-          <!-- Statistics Cards -->
-          <div class="row g-4 mb-4">
-            <div class="col-md-6 col-lg-3">
-              <div class="card h-100">
-                <div class="card-body d-flex align-items-center">
-                  <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
-                    <i class="fas fa-users text-primary fa-lg"></i>
-                  </div>
-                  <div>
-                    <p class="text-muted small mb-0">Donneurs inscrits</p>
-                    <h3 class="fs-4 fw-bold mb-0">5,876</h3>
-                    <p class="text-success small mb-0">+124 ce mois</p>
-                  </div>
+  <!-- Navigation -->
+  <nav class="bg-white shadow-sm">
+    <div class="container">
+      <ul class="nav nav-tabs border-0">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'overview'" (click)="setActiveTab('overview')" href="javascript:void(0)">
+            Vue d'ensemble
+          </a>
+        </li>
+        <li class="nav-item">
+          <a 
+            class="nav-link" 
+            routerLink="/mes-campagnes" 
+            routerLinkActive="active" 
+            [routerLinkActiveOptions]="{ exact: true }">
+            Mes Campagnes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'stocks'" (click)="setActiveTab('stocks')" href="javascript:void(0)">
+            Stocks
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'requests'" (click)="setActiveTab('requests')" href="javascript:void(0)">
+            Demandes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="activeTab === 'reports'" (click)="setActiveTab('reports')" href="javascript:void(0)">
+            Rapports
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow-1 py-4 bg-light">
+    <div class="container">
+      <!-- Vue d'ensemble Tab -->
+      <div *ngIf="activeTab === 'overview'">
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-6 col-lg-3">
+            <div class="card h-100">
+              <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                  <i class="fas fa-users text-primary fa-lg"></i>
                 </div>
-              </div>
-            </div>
-  
-            <div class="col-md-6 col-lg-3">
-              <div class="card h-100">
-                <div class="card-body d-flex align-items-center">
-                  <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
-                    <i class="fas fa-calendar-alt text-success fa-lg"></i>
-                  </div>
-                  <div>
-                    <p class="text-muted small mb-0">Campagnes actives</p>
-                    <h3 class="fs-4 fw-bold mb-0">12</h3>
-                    <p class="text-success small mb-0">+3 cette semaine</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="col-md-6 col-lg-3">
-              <div class="card h-100">
-                <div class="card-body d-flex align-items-center">
-                  <div class="rounded-circle bg-danger bg-opacity-10 p-3 me-3">
-                    <i class="fas fa-tint text-danger fa-lg"></i>
-                  </div>
-                  <div>
-                    <p class="text-muted small mb-0">Poches collectées</p>
-                    <h3 class="fs-4 fw-bold mb-0">516</h3>
-                    <p class="text-success small mb-0">+89 ce mois</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-  
-            <div class="col-md-6 col-lg-3">
-              <div class="card h-100">
-                <div class="card-body d-flex align-items-center">
-                  <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
-                    <i class="fas fa-exclamation-circle text-warning fa-lg"></i>
-                  </div>
-                  <div>
-                    <p class="text-muted small mb-0">Demandes urgentes</p>
-                    <h3 class="fs-4 fw-bold mb-0">3</h3>
-                    <p class="text-danger small mb-0">2 critiques</p>
-                  </div>
+                <div>
+                  <p class="text-muted small mb-0">Donneurs inscrits</p>
+                  <h3 class="fs-4 fw-bold mb-0">{{ stats.nombreDonneurs || 0 }}</h3>
+                  <p class="text-success small mb-0">+{{ stats.nouveauxDonneursCeMois }} donneurs ce mois</p>
                 </div>
               </div>
             </div>
           </div>
-  
-          <div class="container mt-4">
-            <div class="row">
-              <div class="col-md-6 mb-4">
-                <canvas #lineCanvas></canvas>
-              </div>
-              <div class="col-md-6 mb-4">
-                <canvas #pieCanvas></canvas>
-              </div>
-            </div>
-          
-            <div class="row">
-              <div class="col-md-12 mb-4">
-                <canvas #barCanvas></canvas>
-              </div>
-            </div>
-          
-           
-          
-  
-            <div class="col-lg-6">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h5 class="card-title mb-3">Demandes urgentes</h5>
-                  <div class="table-responsive" style="height: 300px;">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th>Hôpital</th>
-                          <th>Groupe</th>
-                          <th>Unités</th>
-                          <th>Statut</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let request of requestsData">
-                          <td>
-                            <div class="fw-medium">{{ request.hospital }}</div>
-                            <div class="small text-muted">{{ request.date }}</div>
-                          </td>
-                          <td>{{ request.group }}</td>
-                          <td>{{ request.units }}</td>
-                          <td>
-                            <span class="badge rounded-pill" [ngClass]="getStatusClass(request.status)">
-                              {{ request.status }}
-                            </span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="card h-100">
+              <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                  <i class="fas fa-calendar-alt text-success fa-lg"></i>
+                </div>
+                <div>
+                  <p class="text-muted small mb-0">Campagnes actives</p>
+                  <h3 class="fs-4 fw-bold mb-0">{{ upcomingCampaigns.length || 0 }}</h3>
+                  <p class="text-success small mb-0">+{{ stats.nouveauxDonneursCeMois }} donneurs ce mois</p>
                 </div>
               </div>
             </div>
           </div>
-  
-          <!-- Upcoming campagnes
-          <div class="card mb-4">
-            <div class="card-body">
-              <h5 class="card-title mb-3">Prochaines campagnes</h5>
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Nom</th>
-                      <th>Date</th>
-                      <th>Lieu</th>
-                      <th>Organisateur</th>
-                      <th>Inscrits</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let campaign of upcomingCampaigns">
-                      <td class="fw-medium">{{ campaign.name }}</td>
-                      <td>{{ campaign.date }}</td>
-                      <td>{{ campaign.location }}</td>
-                      <td>{{ campaign.organizer }}</td>
-                      <td>{{ campaign.donors }}</td>
-                      <td>
-                        <button class="btn btn-sm btn-outline-primary">Détails</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="card h-100">
+              <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-danger bg-opacity-10 p-3 me-3">
+                  <i class="fas fa-tint text-danger fa-lg"></i>
+                </div>
+                <div>
+                  <p class="text-muted small mb-0">Poches collectées</p>
+                  <h3 class="fs-4 fw-bold mb-0">{{ stats.pochesCollectees || 0 }}</h3>
+                  <p class="text-info small mb-0">+{{ stats.pochesCollecteesCeMois || 0 }} ce mois</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3">
+            <div class="card h-100">
+              <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
+                  <i class="fas fa-exclamation-circle text-warning fa-lg"></i>
+                </div>
+                <div>
+                  <p class="text-muted small mb-0">Demandes urgentes</p>
+                  <h3 class="fs-4 fw-bold mb-0">{{ urgentRequests.length || 0 }}</h3>
+                  <p class="text-danger small mb-0">{{ urgentRequests.length }} Urgence</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-   -->
 
-   
-       <!-- Affichage des campagnes en cartes plus larges -->
-<!-- <div *ngIf="activeTab === 'campagnes'"> -->
-<div class="campagnes-grid">
-  <div *ngFor="let campagne of filteredCampagnes">
-    <div class="campagne-card">
-      <div class="header">
-        <!-- Design 3D dans l'en-tête -->
-      </div>
-      <h3 class="campagne-theme">{{ campagne.theme }}</h3>
-      <div class="campagne-info">
-        <div class="info-row">
-          <p class="info-date">
-            <i class="fa-regular fa-calendar"></i>
-            <span>{{ campagne.date_debut | date:'dd MMMM yyyy' }}</span>
-          </p>
-          <p class="info-time">
-            <i class="fa-regular fa-clock"></i>
-            <span>{{ campagne.Heure_debut }} - {{ campagne.Heure_fin }}</span>
-          </p>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <canvas #lineCanvas></canvas>
+          </div>
+          <div class="col-md-6 mb-4">
+            <canvas #pieCanvas></canvas>
+          </div>
         </div>
-        <p class="info-location">
-          <i class="fa-solid fa-location-dot"></i>
-          <span>{{ campagne.lieu }}</span>
-        </p>
-        <p class="info-participants">
-          <i class="fa-solid fa-users"></i>
-          <span>{{ campagne.participant }} participants</span>
-        </p>
-        <p class="info-status">
-          <i class="fa-solid fa-circle-info"></i>
-          <span [ngClass]="{'status-badge': true,
-            'status-planifiee': campagne.statut === 'planifiée',
-            'status-en-cours': campagne.statut === 'en_cours',
-            'status-terminee': campagne.statut === 'terminée',
-            'status-annulee': campagne.statut === 'annulée'
-          }">
-            {{ campagne.statut }}
-          </span>
-        </p>
+
+        <div class="row">
+          <div class="col-md-12 mb-4">
+            <canvas #barCanvas></canvas>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Demandes urgentes -->
+          <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title mb-3">Demandes urgentes</h5>
+                <div class="table-responsive" style="height: 300px;">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Hôpital</th>
+                        <th>Groupe</th>
+                        <th>Unités</th>
+                        <th>Statut</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let request of urgentRequests">
+                        <td>
+                          <div class="fw-medium">{{ request?.structure?.nom || 'Non spécifié' }}</div>
+                          <div class="small text-muted">{{ request.date | date: 'dd/MM/yyyy' }}</div>
+                        </td>
+                        <td>{{ request.groupe_sanguin }}</td>
+                        <td>{{ request.quantite }}</td>
+                        <td>
+                          <span class="badge rounded-pill" [ngClass]="getStatusClass(request.status)">
+                            {{ request.status || 'Urgence' }}
+                          </span>
+                        </td>
+                      </tr>
+                      <tr *ngIf="urgentRequests.length === 0">
+                        <td colspan="4" class="text-center text-muted">Aucune demande urgente</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Prochaines campagnes -->
+          <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title mb-3">Prochaines campagnes</h5>
+                <div class="table-responsive" style="height: 300px;">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Nom</th>
+                        <th>Date</th>
+                        <th>Lieu</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let campagne of upcomingCampaigns">
+                        <td class="fw-medium">{{ campagne.theme }}</td>
+                        <td>{{ campagne.date_debut | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ campagne.lieu }}</td>
+                        <td>
+                          <button class="btn btn-sm btn-outline-primary" (click)="navigateToDetail(campagne.id)">Détails</button>
+                        </td>
+                      </tr>
+                      <tr *ngIf="upcomingCampaigns.length === 0">
+                        <td colspan="4" class="text-center text-muted">Aucune campagne prévue</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="campagne-actions">
-        <!-- Éditer -->
-        <button (click)="editCampagne(campagne)" title="Éditer la campagne" *ngIf="campagne.statut !== 'terminée'">
-          <i class="fa-solid fa-pen-to-square"></i>
-        </button>
 
-        <!-- Détails -->
-        <button (click)="navigateToDetail(campagne.id)" title="Voir les détails">
-          <i class="fa-solid fa-eye"></i>
-        </button>
+      <!-- Mes Campagnes Tab -->
+      <div *ngIf="activeTab === 'mes-campagnes'">
+        <!-- Contenu de l'onglet Mes Campagnes -->
+      </div>
 
-        <!-- Participants -->
-        <button (click)="viewParticipants(campagne.id)" title="Voir les participants">
-          <i class="fa-solid fa-users"></i>
-        </button>
+      <!-- Stocks Tab -->
+      <div *ngIf="activeTab === 'stocks'">
+        <!-- Contenu de l'onglet Stocks -->
+      </div>
 
-        <!-- Valider (seulement pour les campagnes planifiées) -->
-        <button (click)="validerCampagne(campagne.id)" *ngIf="campagne.statut === 'planifiée'" title="Valider la campagne">
-          <i class="fa-solid fa-check"></i>
-        </button>
+      <!-- Demandes Tab -->
+      <div *ngIf="activeTab === 'requests'">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Liste des demandes</h5>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Structure</th>
+                    <th>Groupe sanguin</th>
+                    <th>Quantité</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let request of requestsData">
+                    <td>{{ request?.structure?.nom || 'Non spécifié' }}</td>
+                    <td>{{ request.groupe_sanguin }}</td>
+                    <td>{{ request.quantite }}</td>
+                    <td>{{ request.date | date:'dd/MM/yyyy' }}</td>
+                    <td>
+                      <span class="badge rounded-pill" [ngClass]="getStatusClass(request.status)">
+                        {{ request.status || 'En attente' }}
+                      </span>
+                    </td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-primary me-1">Détails</button>
+                      <button class="btn btn-sm btn-outline-success">Approuver</button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="requestsData.length === 0">
+                    <td colspan="6" class="text-center text-muted py-3">
+                      <i class="fas fa-info-circle me-2"></i>Aucune demande disponible
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <!-- Supprimer -->
-        <button (click)="deleteCampagne(campagne.id)" *ngIf="campagne.statut !== 'terminée'" title="Supprimer la campagne">
-          <i class="fa-solid fa-trash"></i>
-        </button>
+      <!-- Rapports Tab -->
+      <div *ngIf="activeTab === 'reports'">
+        <!-- Contenu de l'onglet Rapports -->
+      </div>
+
+      <!-- Message si aucune campagne -->
+      <div *ngIf="activeTab === 'mes-campagnes' && filteredCampagnes.length === 0" class="alert alert-info text-center">
+        <i class="fas fa-info-circle fa-2x mb-3"></i>
+        <p>Aucune campagne trouvée</p>
+        <button class="btn btn-primary mt-3" (click)="redirectToNewCampagne()">Créer une nouvelle campagne</button>
       </div>
     </div>
-  </div>
-<!-- </div> -->
-    <!-- Message si aucune campagne -->
-    <!-- <div *ngIf="filteredCampagnes && filteredCampagnes.length === 0" class="alert alert-info text-center">
-      <i class="fas fa-info-circle fa-2x mb-3"></i>
-      <p>Aucune campagne trouvée</p>
-      <button class="btn btn-primary mt-3" (click)="showForm = true">Créer une nouvelle campagne</button>
-    </div> -->
-     <!-- Message si aucune campagne -->
-     <div *ngIf="filteredCampagnes.length === 0" class="alert alert-info text-center">
-      <i class="fas fa-info-circle fa-2x mb-3"></i>
-      <p>Aucune campagne trouvée</p>
-      <button class="btn btn-primary mt-3" (click)="redirectToNewCampagne()">Créer une nouvelle campagne</button>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white py-3 border-top">
+    <div class="container text-center">
+      <p class="text-muted mb-0 small">© 2025 Système National de Gestion des Dons de Sang - Sénégal</p>
     </div>
-  </div>
-    
-    <!-- Footer -->
-    <footer class="bg-white py-3 border-top">
-      <div class="container text-center">
-        <p class="text-muted mb-0 small">© 2025 Système National de Gestion des Dons de Sang - Sénégal</p>
-      </div>
-    </footer>
-  </div>
-<!-- Include Font Awesome for icons -->  
+  </footer>
+</div>

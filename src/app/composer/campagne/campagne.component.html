@@ -3,6 +3,28 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
 <div class="container mt-5">
+  <!-- Header -->
+      <div class="header">
+        <div class="header-title">
+          <h1>Bienvenue, {{ user?.nom }} sur votre espace donateur !</h1>
+        </div>
+        <div class="user-info">
+          <div class="notification">
+            <i class="fas fa-bell"></i>
+            <span class="notification-count">3</span>
+          </div>
+          <div class="user-profile">
+            <div class="avatar"></div>
+            <span>{{ user?.nom }}</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+           <button class="logout-btn" (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Déconnexion
+          </button>
+        </div>
+      </div>
+
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Liste des Campagnes</h2>
   </div>
@@ -84,67 +106,3 @@
 </div>
 
 
-<!-- Modal Éligibilité
-<div *ngIf="showEligibiliteModal" class="modal fade show d-block" tabindex="-1" role="dialog" aria-labelledby="eligibiliteModalLabel" aria-modal="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Vérification d'Éligibilité</h5>
-        <button type="button" class="btn-close" aria-label="Fermer" (click)="fermerModalEligibilite()"></button>
-      </div>
-      <p *ngIf="selectedCampagneId">ID sélectionné : {{ selectedCampagneId }}</p>
-      <div class="modal-body">
-        <form [formGroup]="eligibiliteForm" (ngSubmit)="verifierEligibilite(selectedCampagneId!)">
-          <div class="mb-3">
-            <label for="sexe" class="form-label">Sexe :</label>
-            <select id="sexe" class="form-select" formControlName="sexe">
-              <option value="Homme">Homme</option>
-              <option value="Femme">Femme</option>
-            </select>
-              <small class="text-danger">Le sexe est requis</small>
-
-          </div>
-
-          <div class="mb-3">
-            <label for="date_naissance" class="form-label">Date de naissance :</label>
-            <input type="date" id="date_naissance" class="form-control" formControlName="date_naissance" />
-            <small class="text-danger">La date naissance est requis</small>
-
-          </div>
-
-          <div class="mb-3">
-            <label for="poids" class="form-label">Poids (kg) :</label>
-            <input type="number" id="poids" class="form-control" formControlName="poids" />
-            <small class="text-danger">Le poids est requis</small>
-
-          </div>
-
-          <div class="mb-3">
-            <label for="date_dernier_don" class="form-label">Date du dernier don (optionnel) :</label>
-            <input type="date" id="date_dernier_don" class="form-control" formControlName="date_dernier_don" />
-            <small class="text-danger">La date dernier don est requis</small>
-
-          </div>
-
-          <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-outline-success me-2" (click)="verifierEligibilite(selectedCampagneId)" >
-              <i class="fas fa-check-circle me-1"></i> Vérifier l’éligibilité
-            </button>
-            <button type="button" class="btn btn-outline-secondary" (click)="fermerModalEligibilite()">
-              Fermer
-            </button>
-          </div>
-          <!-- <div *ngIf="eligibiliteResultat" class="mt-3">
-            <h5>Résultat de l'éligibilité :</h5>
-            <p>{{ eligibiliteResultat }}</p>
-            <div *ngIf="eligibiliteResultat === 'Vous êtes éligible !'">
-              <p>Vous pouvez vous inscrire à la campagne.</p>
-              <button class="btn btn-outline-primary" (click)="inscrireDonateur(selectedCampagneId)">
-                <i class="fas fa-pen me-1"></i> S'inscrire
-              </button> 
-            </div> -->
-        <!-- </form>
-      </div>
-    </div>
-  </div> -->
-<!-- </div> --> -->

@@ -76,56 +76,35 @@ export class MesCampagnesComponent implements OnInit {
     }
   
     const id = user.id;
-    this.fetchgetMesCampagnes(); // Ajoute cette ligne pour récupérer les campagnes dès l'initialisation
+    this.fetchgetMesCampagnes(); 
     this.donateursDeMesCampagnes(id);
-  }
-  
- 
-  // getUserInfo(): void {
-  //   this.authService.getUserInfo().subscribe({
-      
-  //     next: (userInfo: any) => {
-  //       console.log(localStorage.getItem('token'));
-  //       console.log('User info:', userInfo); // Pour vérifier dans la console
-  //       this.user = userInfo; // Stocker les informations de l'utilisateur
-  //       console.log("Utilisateur connecté :", userInfo); // Pour vérifier dans la console
-        
-  //       this.organisateurId = userInfo.organisateur?.id || null;
-  //       this.structureId = userInfo.organisateur?.structure_transfusion_sanguin_id || null;
-  
-  //       this.fetchCampagnesByOrganisateur();
-  //     },
-  //     error: (error: any) => {
-  //       console.error('Erreur lors de la récupération des informations utilisateur:', error);
-  //     }
-  //   });
-  // }
-  
-  
-
-  logout(): void {
-    this.authService.logout();
   }
 
   fetchgetMesCampagnes(): void {
-    console.log('[fetchCampagnes] Appel au service pour récupérer les campagnes...');
-    this.campagneService.getCampagnes().subscribe({
-      next: (response: any) => {
-        this.campagnes = response.data;
-        console.log('[fetchgetMesCampagnes] Données reçues du backend:', this.campagnes);
-        this.filteredCampagnes = this.campagnes;
-        this.filterCampagnes(); // Filtrer les campagnes en fonction de la date
-      },
-      error: (error: any) => {
-        console.error('[fetchgetMesCampagnes] Erreur lors de la récupération des campagnes:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: 'Impossible de charger les campagnes. Veuillez réessayer plus tard.',
-        });
-      }
-    });
-  }
+  console.log('[fetchCampagnes] Appel au service pour récupérer les campagnes...');
+  this.campagneService.getCampagnes().subscribe({
+    next: (response: any) => {
+      this.campagnes = response.data;
+      console.log('[fetchgetMesCampagnes] Données reçues du backend:', this.campagnes);
+      this.filteredCampagnes = this.campagnes;
+      this.filterCampagnes();
+
+      // 👇 Appel pour récupérer les donateurs de chaque campagne
+      this.campagnes.forEach((campagne: Campagne) => {
+        this.donateursDeMesCampagnes(campagne.id);
+      });
+    },
+    error: (error: any) => {
+      console.error('[fetchgetMesCampagnes] Erreur lors de la récupération des campagnes:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Impossible de charger les campagnes. Veuillez réessayer plus tard.',
+      });
+    }
+  });
+}
+
   
   // donateursDeMesCampagnes(idCampagne: number): void {
   //   this.campagneService.donateursDeMaCampagnes(idCampagne).subscribe({
@@ -456,5 +435,25 @@ export class MesCampagnesComponent implements OnInit {
   // Méthode pour rediriger vers la page de création de campagne
   navigateToCreateCampagne(): void {
     this.router.navigate(['/campagne/publier']);
+  }
+   logout(): void {
+    // Utilisation de l'API d'observables moderne
+    this.authService.logout().subscribe({
+      next: () => {
+        console.log('Déconnexion réussie');
+      },
+      error: (error) => {
+        console.error('Erreur lors de la déconnexion', error);
+      },
+      complete: () => {
+        // Dans tous les cas, nettoyer et rediriger
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        sessionStorage.clear(); // Nettoyer également le sessionStorage si nécessaire
+        
+        // Rediriger vers la page de connexion
+        this.router.navigate(['/login']);
+      }
+    });
   }
 }

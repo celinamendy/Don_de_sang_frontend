@@ -14,6 +14,7 @@ import { DonateurService } from '../../services/donateur.service';
 import { EligibilityService } from '../../services/eligibility.service';
 import { Donateur } from '../../models/donateur';
 import Swal from 'sweetalert2';
+import { Route } from '@angular/router';
 
 @Component({
   selector: 'app-campagne',
@@ -59,6 +60,7 @@ export class CampagneComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private campagneService: CampagneService,
     private authService: AuthService,
+    private router: Router,
     private donateurService: DonateurService,
     private eligibilityService: EligibilityService,
   ) {}
@@ -274,7 +276,26 @@ closeModal(): void {
 
   // // Méthodes à implémenter selon besoins
   // navigateToCreateCampagne(): void {}
-  logout(): void {}
+ logout(): void {
+    // Utilisation de l'API d'observables moderne
+    this.authService.logout().subscribe({
+      next: () => {
+        console.log('Déconnexion réussie');
+      },
+      error: (error) => {
+        console.error('Erreur lors de la déconnexion', error);
+      },
+      complete: () => {
+        // Dans tous les cas, nettoyer et rediriger
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        sessionStorage.clear(); // Nettoyer également le sessionStorage si nécessaire
+        
+        // Rediriger vers la page de connexion
+        this.router.navigate(['/login']);
+      }
+    });
+  }
   navigateToDetail(id: number): void {}
   // viewParticipants(id: number): void {}
   // validerCampagne(id: number): void {}

@@ -1,14 +1,38 @@
 <body>
 
   <div class="container">
-    <h2 class="display-5">Mes campagnes</h2>
+    <!-- Header -->
+      <div class="header">
+        <div class="header-title">
+          <h1>Bienvenue, {{ user?.nom }} sur votre espace donateur !</h1>
+        </div>
+        <div class="user-info">
+          <div class="notification">
+            <i class="fas fa-bell"></i>
+            <span class="notification-count">3</span>
+          </div>
+          <div class="user-profile">
+            <div class="avatar"></div>
+            <span>{{ user?.nom }}</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <button class="logout-btn" (click)="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Déconnexion
+          </button>
+        </div>
+      </div>
+
+    <!-- <h2 class="display-5">Mes campagnes</h2> -->
   
     <!-- Recherche et tri -->
     <div class="actions">
       <input type="text" class="form-control" placeholder="Rechercher par thème, lieu ou participants..." [(ngModel)]="searchTerm" (input)="applyFilter()">
       <button class="btn btn-outline-secondary" (click)="resetFilters()">Réinitialiser</button>
     </div>
-  
+   <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Liste des Campagnes</h2>
+    </div>
     <!-- Filtres de section -->
     <div class="section-filters">
       <button [class.active]="activeSection === 'all'" (click)="activeSection = 'all'" class="btn">Toutes</button>
@@ -50,16 +74,16 @@
             </div>
             <div class="card-actions">
               <button class="btn btn-outline-primary btn-icon" (click)="editCampagne(campagne)" data-bs-toggle="modal" data-bs-target="#campagneModal">
-                <i class="fas fa-edit"></i> Modifier
+                <i class="fas fa-edit"></i> 
               </button>
               <button class="btn btn-success btn-icon" (click)="validerCampagne(campagne.id)">
-                <i class="fas fa-check"></i> Valider
+                <i class="fas fa-check"></i> 
               </button>
               <button class="btn btn-outline-info btn-icon" (click)="viewParticipants(campagne.id)">
-                <i class="fas fa-users"></i> Participants
+                <i class="fas fa-users"></i> 
               </button>
               <button (click)="deleteCampagne(campagne.id)" class="btn btn-danger">
-                <i class =" fas fa-trash"></i>Supprimer
+                <i class =" fas fa-trash"></i>
               </button>
               
             </div>
@@ -101,16 +125,16 @@
             </div>
             <div class="card-actions">
               <button class="btn btn-outline-primary btn-icon" (click)="editCampagne(campagne)" data-bs-toggle="modal" data-bs-target="#campagneModal">
-                <i class="fas fa-edit"></i> Modifier
+                <i class="fas fa-edit"></i>
               </button>
               <button class="btn btn-success btn-icon" (click)="validerCampagne(campagne.id)">
-                <i class="fas fa-check"></i> Valider
+                <i class="fas fa-check"></i>
               </button>
               <button class="btn btn-outline-info btn-icon" (click)="viewParticipants(campagne.id)">
-                <i class="fas fa-users"></i> Participants
+                <i class="fas fa-users"></i> 
               </button>
               <button (click)="deleteCampagne(campagne.id)" class="btn btn-danger">
-                <i class =" fas fa-trash"></i>Supprimer
+                <i class =" fas fa-trash"></i>
               </button>
             </div>
           </div>
@@ -151,16 +175,16 @@
             </div>
             <div class="card-actions">
               <button class="btn btn-outline-primary btn-icon" (click)="editCampagne(campagne)" data-bs-toggle="modal" data-bs-target="#campagneModal">
-                <i class="fas fa-edit"></i> Modifier
+                <i class="fas fa-edit"></i> 
               </button>
               <button class="btn btn-success btn-icon" (click)="validerCampagne(campagne.id)">
-                <i class="fas fa-check"></i> Valider
+                <i class="fas fa-check"></i> 
               </button>
               <button class="btn btn-outline-info btn-icon" (click)="donateursDeMesCampagnes(campagne.id)">
-                <i class="fas fa-users"></i> Participants
+                <i class="fas fa-users"></i> 
               </button>
               <button (click)="deleteCampagne(campagne.id)" class="btn btn-danger">
-                <i class =" fas fa-trash"></i>Supprimer
+                <i class =" fas fa-trash"></i>
               </button>
 
             </div>

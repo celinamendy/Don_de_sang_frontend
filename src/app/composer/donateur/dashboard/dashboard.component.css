@@ -156,6 +156,32 @@ body {
   font-weight: bold;
   color: var(--dark-color);
 }
+/* Bouton de déconnexion */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #e9ecef;
+  color: #dc3545;
+  border-color: #ced4da;
+}
+
+.logout-btn i {
+  font-size: 0.9rem;
+}
 
 .stats-cards {
   display: grid;

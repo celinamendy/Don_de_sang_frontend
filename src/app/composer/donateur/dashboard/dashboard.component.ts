@@ -72,6 +72,8 @@ import { NotificationService } from '../../../services/notification.service';
 import Swal from 'sweetalert2';
 import { DateTime } from 'luxon';
 import { HistoriquesComponent } from '../historiques/historiques.component';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -92,6 +94,7 @@ upcomingCampagnes: Campagne[] = [];
   campagnesDuJour: any[] = [];
   private authService = inject(AuthService);
   private campagneService = inject(CampagneService);
+  private router = inject(Router);  
   private donateurService = inject(DonateurService);
   private eligibiliteService = inject(EligibilityService);
   private notificationService = inject(NotificationService);
@@ -200,6 +203,26 @@ upcomingCampagnes: Campagne[] = [];
       },
       error: (erreur) => {
         console.error('Erreur lors du lancement du test d’éligibilité', erreur);
+      }
+    });
+  }
+   logout(): void {
+    // Utilisation de l'API d'observables moderne
+    this.authService.logout().subscribe({
+      next: () => {
+        console.log('Déconnexion réussie');
+      },
+      error: (error) => {
+        console.error('Erreur lors de la déconnexion', error);
+      },
+      complete: () => {
+        // Dans tous les cas, nettoyer et rediriger
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        sessionStorage.clear(); // Nettoyer également le sessionStorage si nécessaire
+        
+        // Rediriger vers la page de connexion
+        this.router.navigate(['/login']);
       }
     });
   }

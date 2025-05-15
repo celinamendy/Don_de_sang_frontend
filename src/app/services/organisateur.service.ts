@@ -17,7 +17,7 @@ export class OrganisateurService {
 
   private getAuthHeaders() {
     const token = localStorage.getItem('access_token');
-    console.log('le token est présent dans le localstorage ...');
+    // console.log('le token est présent dans le localstorage ...');
     return {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`

@@ -26,8 +26,13 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/logout`, {});
-  }
+  return this.http.post(`${this.apiUrl}/logout`, {}, {
+    headers: {
+      Authorization: `Bearer ${this.getToken()}`
+    }
+  });
+}
+
   getToken(): string | null {
     return localStorage.getItem('access_token');
   }
@@ -146,6 +151,7 @@ export class AuthService {
     return user && user.roles && user.roles.includes('structure');
   }
 }
+
 function jwtDecode(token: string): any {
   throw new Error('Function not implemented.');
 }
