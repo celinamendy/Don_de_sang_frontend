@@ -3,7 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { User } from '../models/user';
+import { tap } from 'rxjs/operators';
 
+interface RefreshResponse {
+  access_token: string;
+  
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -59,9 +64,16 @@ export class AuthService {
     }
   }
   
-  refresh(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/refresh`, {});
-  }
+refreshToken(): Observable<RefreshResponse> {
+  return this.http.post<RefreshResponse>(`${this.apiUrl}/refresh`, {})
+    .pipe(
+      tap(response => {
+        if (response && response.access_token) {
+          localStorage.setItem('access_token', response.access_token);
+        }
+      })
+    );
+}
 
   getProfile(): Observable<any> {
     return this.http.get(`${this.apiUrl}/profile`);

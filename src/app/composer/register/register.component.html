@@ -1,0 +1,215 @@
+<!-- Type d'utilisateur (rôle) -->
+    
+    <div class="mb-3">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+      <label class="form-label">Type d'utilisateur</label>
+      <select formControlName="type" class="form-select" [ngClass]="{ 'is-invalid': submitted && f['type'].errors }">
+        <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+      </select>
+      <div *ngIf="submitted && f['type'].errors" class="invalid-feedback">
+        <div *ngIf="f['type'].errors['required']">Le type d'utilisateur est requis</div>
+      </div>
+    
+    
+    <!-- Champs communs pour tous les utilisateurs -->
+    <div class="mb-3">
+      <label class="form-label">Nom complet</label>
+      <input type="text" formControlName="nom" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['nom'].errors }">
+      <div *ngIf="submitted && f['nom'].errors" class="invalid-feedback">
+        <div *ngIf="f['nom'].errors['required']">Le nom est requis</div>
+        <div *ngIf="f['nom'].errors['maxlength']">Le nom ne doit pas dépasser 255 caractères</div>
+        <div *ngIf="f['nom'].errors['serverError']">{{ f['nom'].errors['serverError'] }}</div>
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+      <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+        <div *ngIf="f['email'].errors['required']">L'email est requis</div>
+        <div *ngIf="f['email'].errors['email']">Veuillez entrer un email valide</div>
+        <div *ngIf="f['email'].errors['serverError']">{{ f['email'].errors['serverError'] }}</div>
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label class="form-label">Mot de passe</label>
+      <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+        <div *ngIf="f['password'].errors['required']">Le mot de passe est requis</div>
+        <div *ngIf="f['password'].errors['minlength']">Le mot de passe doit contenir au moins 8 caractères</div>
+        <div *ngIf="f['password'].errors['serverError']">{{ f['password'].errors['serverError'] }}</div>
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label class="form-label">Téléphone</label>
+      <input type="tel" formControlName="telephone" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['telephone'].errors }">
+      <div *ngIf="submitted && f['telephone'].errors" class="invalid-feedback">
+        <div *ngIf="f['telephone'].errors['maxlength']">Le numéro de téléphone ne doit pas dépasser 20 caractères</div>
+            <div *ngIf="f['telephone'].errors['required']">Le téléphone est requis</div>
+        <div *ngIf="f['telephone'].errors['serverError']">{{ f['telephone'].errors['serverError'] }}</div>
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label class="form-label">Région</label>
+      <select formControlName="region_id" class="form-select" [ngClass]="{ 'is-invalid': submitted && f['region_id'].errors }">
+        <option value="">Sélectionner une région</option>
+        <option *ngFor="let region of regions" [value]="region.id">{{ region.libelle }}</option>
+      </select>
+      <div *ngIf="submitted && f['region_id'].errors" class="invalid-feedback">
+        <div *ngIf="f['region_id'].errors['required']">La région est requise</div>
+        <div *ngIf="f['region_id'].errors['serverError']">{{ f['region_id'].errors['serverError'] }}</div>
+      </div>
+    </div>
+    
+    <div class="mb-3">
+      <label class="form-label">Adresse</label>
+      <input type="text" formControlName="adresse" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['adresse'].errors }">
+      <div *ngIf="submitted && f['adresse'].errors" class="invalid-feedback">
+        <div *ngIf="f['adresse'].errors['serverError']">{{ f['adresse'].errors['serverError'] }}</div>
+      </div>
+    </div>
+    
+    <!-- Champs spécifiques aux donateurs -->
+    <div *ngIf="registerForm.get('type')?.value === 'donateur'">
+      <h4>Informations du donateur</h4>
+      
+      <div class="mb-3">
+        <label class="form-label">Sexe</label>
+        <select formControlName="sexe" class="form-select" [ngClass]="{ 'is-invalid': submitted && f['sexe'].errors }">
+          <option value="">Sélectionner</option>
+          <option value="M">Masculin</option>
+          <option value="F">Féminin</option>
+        </select>
+        <div *ngIf="submitted && f['sexe'].errors" class="invalid-feedback">
+          <div *ngIf="f['sexe'].errors['serverError']">{{ f['sexe'].errors['serverError'] }}</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Date de naissance</label>
+        <input type="date" formControlName="date_naissance" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['date_naissance'].errors }">
+        <div *ngIf="submitted && f['date_naissance'].errors" class="invalid-feedback">
+          <div *ngIf="f['date_naissance'].errors['serverError']">{{ f['date_naissance'].errors['serverError'] }}</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Poids (kg)</label>
+        <input type="number" formControlName="poids" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['poids'].errors }">
+        <div *ngIf="submitted && f['poids'].errors" class="invalid-feedback">
+          <div *ngIf="f['poids'].errors['serverError']">{{ f['poids'].errors['serverError'] }}</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Antécédents médicaux / Médicaments</label>
+        <select formControlName="antecedent_medicament" class="form-select" [ngClass]="{ 'is-invalid': submitted && f['antecedent_medicament'].errors }">
+          <option value="">Sélectionner</option>
+          <option value="aucun">aucun</option>
+          <option value="Maladie chronique">Maladie chronique</option>
+          <option value="hépathite">hépathite</option>
+          <option value="anémier">anémier</option>
+          <option value="hépathite">hépathite</option>
+          <option value="autre">autre</option>
+        </select>        <div *ngIf="submitted && f['antecedent_medicament'].errors" class="invalid-feedback">
+          <div *ngIf="f['antecedent_medicament'].errors['serverError']">{{ f['antecedent_medicament'].errors['serverError'] }}</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Date du dernier don</label>
+        <input type="date" formControlName="date_dernier_don" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['date_dernier_don'].errors }">
+        <div *ngIf="submitted && f['date_dernier_don'].errors" class="invalid-feedback">
+          <div *ngIf="f['date_dernier_don'].errors['serverError']">{{ f['date_dernier_don'].errors['serverError'] }}</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Groupe sanguin</label>
+        <select formControlName="groupe_sanguin_id" class="form-select" [ngClass]="{ 'is-invalid': submitted && f['groupe_sanguin_id'].errors }">
+          <option value="">Sélectionner un groupe sanguin</option>
+          <option *ngFor="let groupe of groupesSanguins" [value]="groupe.id">{{ groupe.libelle }}</option>
+        </select>
+        <div *ngIf="submitted && f['groupe_sanguin_id'].errors" class="invalid-feedback">
+          <div *ngIf="f['groupe_sanguin_id'].errors['required']">Le groupe sanguin est requis</div>
+          <div *ngIf="f['groupe_sanguin_id'].errors['serverError']">{{ f['groupe_sanguin_id'].errors['serverError'] }}</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Champs spécifiques aux organisateurs -->
+    <div *ngIf="registerForm.get('type')?.value === 'organisateur'">
+      <h4>Informations de l'organisateur</h4>
+      
+      <div class="mb-3">
+        <label class="form-label">Nom du responsable</label>
+        <input type="text" formControlName="nom_responsable" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['nom_responsable'].errors }">
+        <div *ngIf="submitted && f['nom_responsable'].errors" class="invalid-feedback">
+          <div *ngIf="f['nom_responsable'].errors['required']">Le nom du responsable est requis</div>
+          <div *ngIf="f['nom_responsable'].errors['serverError']">{{ f['nom_responsable'].errors['serverError'] }}</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Type d'organisation</label>
+        <input type="text" formControlName="type_organisation" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['type_organisation'].errors }">
+        <div *ngIf="submitted && f['type_organisation'].errors" class="invalid-feedback">
+          <div *ngIf="f['type_organisation'].errors['serverError']">{{ f['type_organisation'].errors['serverError'] }}</div>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Structure de transfusion sanguine</label>
+        <select formControlName="structure_transfusion_sanguin_id" class="form-select" [ngClass]="{ 'is-invalid': submitted && f['structure_transfusion_sanguin_id'].errors }">
+          <option value="">Sélectionner une structure</option>
+          <option *ngFor="let structure of structures" [value]="structure.id">{{ structure.nom }}</option>
+        </select>
+        <div *ngIf="submitted && f['structure_transfusion_sanguin_id'].errors" class="invalid-feedback">
+          <div *ngIf="f['structure_transfusion_sanguin_id'].errors['required']">La structure de transfusion est requise</div>
+          <div *ngIf="f['structure_transfusion_sanguin_id'].errors['serverError']">{{ f['structure_transfusion_sanguin_id'].errors['serverError'] }}</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Champs spécifiques aux structures de transfusion -->
+    <div *ngIf="registerForm.get('type')?.value === 'structure_transfusion_sanguin'">
+      <h4>Informations de la structure de transfusion</h4>
+      
+      <div class="mb-3">
+        <label class="form-label">Nom du responsable</label>
+        <input type="text" formControlName="nom_responsable" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['nom_responsable'].errors }">
+        <div *ngIf="submitted && f['nom_responsable'].errors" class="invalid-feedback">
+          <div *ngIf="f['nom_responsable'].errors['required']">Le nom du responsable est requis</div>
+          <div *ngIf="f['nom_responsable'].errors['serverError']">{{ f['nom_responsable'].errors['serverError'] }}</div>
+        </div>
+      </div>
+      
+        <div class="mb-3">
+        <label class="form-label">Type d'entité</label>
+        <select  formControlName="type_entite" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['type_entite'].errors }">
+          <option value="">-- Sélectionnez --</option>
+          <option value="hôpital">Hôpital</option>
+          <option value="poste de santé">Poste de santé</option>
+          <option value="Clinique">Clinique</option>
+          <option value="autre">Autre</option>
+        </select>
+        <div *ngIf="submitted && f['type_entite'].errors" class="invalid-feedback">
+          <div *ngIf="f['type_entite'].errors['required']">Le type d'entité est requis</div>
+          <div *ngIf="f['type_entite'].errors['serverError']">{{ f['type_entite'].errors['serverError'] }}</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mt-4">
+      <button [disabled]="loading" class="btn btn-primary">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+        S'inscrire
+      </button>
+      <a routerLink="/login" class="btn btn-link">Déjà inscrit ?</a>
+    </div>
+  </form>
+
+

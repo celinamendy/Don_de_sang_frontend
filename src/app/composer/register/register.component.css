@@ -1,0 +1,90 @@
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #34495e;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #2980b9;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #2980b9;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #1c5980;
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+.row .form-group {
+  flex: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+}

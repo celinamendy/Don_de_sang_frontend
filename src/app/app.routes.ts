@@ -7,11 +7,13 @@ import { PublierComponent } from './composer/campagne/publier/publier.component'
 import { ListesComponent } from './composer/campagne/listes/listes.component';
 import { MesCampagnesComponent } from './composer/organisateur/dashboard/mes-campagnes/mes-campagnes.component';
 import { HistoriquesComponent } from './composer/donateur/historiques/historiques.component';
+import { RegisterComponent } from './composer/register/register.component';
 // ✅ Correct
 // import { DetailComponent } from './composer/campagne/detail.component';
 export const routes: Routes = [
     { path: '', redirectTo: 'accueil', pathMatch: 'full' }, // Redirection par défaut vers 'accueil'
     { path: 'accueil', component: AccueilComponent },
+    { path: 'inscription', component: RegisterComponent },
     { path: 'connexion', loadComponent: () => import('./composer/connexion/connexion.component').then(m => m.ConnexionComponent) },
     { path: 'donateur/dashboard', loadComponent: () => import('./composer/donateur/dashboard/dashboard.component').then(m => m.DashboardComponent) },
     { path: 'campagnes', component: CampagneComponent },
